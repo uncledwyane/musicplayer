@@ -1,21 +1,21 @@
 <template>
   <div id="app">
-      {{ msg }}
-          <v-btn color="primary">Primary</v-btn>
-          <v-icon large color="green darken-2">mdi-domain</v-icon>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 export default {
-    data(){
-        return {
-            msg: 'APP'
-        }
-    }
 }
 </script>
 
-<style>
-
+<style lang='scss' scoped>
+  #app{
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    position: absolute;
+    z-index: -1;
+    overflow: hidden;
+  }
 </style>

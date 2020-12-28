@@ -6,11 +6,12 @@ const path = require('path')
 const {CleanWebpackPlugin} = require('clean-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 // 分离css
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+// const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 // 压缩css
 const OptimizeCssAssetsWebpackPlugin = require('optimize-css-assets-webpack-plugin')
 const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const isDev = process.env.Node_ENV === 'development'
+const proxy = require('./src/api/proxy.js')
 
 module.exports = {
     devtool: process.env.Node_ENV === 'production' ? 'none' : 'source-map',
@@ -18,7 +19,13 @@ module.exports = {
         contentBase: path.join(__dirname, 'dist'),
         port: 8000,
         compress: true,
-        open: true
+        open: true,
+        proxy: {
+            'http://localhost:8000': {
+                target: 'http://localhost:3000',
+                changeOrigin: true
+            }
+        }
     },
     entry: {
         main: './src/main.js'
@@ -29,8 +36,9 @@ module.exports = {
     },
     resolve: {
         alias: {
-            '@': path.resolve(__dirname, './src'),
-            '@com': path.resolve(__dirname, './src/components')
+            '@': ('src'),
+            '@com': ('src/components'),
+            '@store': ('src/store')
         }
     },
     module: {
@@ -50,25 +58,7 @@ module.exports = {
             },
             {
                 test: /\.s(c|a)ss$/,
-                use: [
-                  'vue-style-loader',
-                  'css-loader',
-                    {
-                        loader: 'sass-loader',
-                        // Requires sass-loader@^7.0.0
-                        options: {
-                            implementation: require('sass'),
-                            indentedSyntax: true // optional
-                        },
-                        // Requires sass-loader@^8.0.0
-                        options: {
-                            implementation: require('sass'),
-                            sassOptions: {
-                                indentedSyntax: true // optional
-                            },
-                        },
-                    },
-                ],
+                loader: 'style-loader!css-loader!sass-loader'
             },
             {
                 test: /\.(jpg|png|jpeg|gif)$/,
@@ -113,10 +103,5 @@ module.exports = {
         }),
         new OptimizeCssAssetsWebpackPlugin(),
         new VueLoaderPlugin()
-    ],
-    resolve: {
-        alias: {
-            'vue$': 'vue/dist/vue.esm.js'
-        }
-    } 
+    ]
 }
