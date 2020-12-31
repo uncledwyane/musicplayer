@@ -13,6 +13,11 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 const isDev = process.env.Node_ENV === 'development'
 const proxy = require('./src/api/proxy.js')
 
+function resolve (dir) {
+    return path.join(__dirname, '.', dir)
+}
+
+
 module.exports = {
     devtool: process.env.Node_ENV === 'production' ? 'none' : 'source-map',
     devServer: {
@@ -35,10 +40,11 @@ module.exports = {
         path: path.join(__dirname, 'dist')
     },
     resolve: {
+        extensions: ['.js', '.vue', '.json'],
         alias: {
-            '@': ('src'),
-            '@com': ('src/components'),
-            '@store': ('src/store')
+          'vue$': 'vue/dist/vue.esm.js',
+          '@': resolve('src'),
+          'components': resolve('src/components'),
         }
     },
     module: {

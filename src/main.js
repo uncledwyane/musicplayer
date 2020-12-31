@@ -8,7 +8,8 @@ import router from './router/router'
 import theme from 'muse-ui/lib/theme'
 import 'muse-ui/dist/muse-ui.css'
 import Axios from 'axios'
-import store from '../src/store/index.js'
+import store from '@/store/index.js'
+
 
 Vue.use(VueRouter)
 Vue.use(Vuex)

@@ -1,6 +1,5 @@
 const when = require('when')
 const axios = require('axios')
-const { defer } = require('when')
 axios.defaults.baseURL = 'http://localhost:3000'
 axios.defaults.withCredentials = true
 
@@ -44,6 +43,72 @@ module.exports = function RestAPI(){
         return fetchGet('/login/cellphone', {params: {phone: phoneNumber, password: formatPassword}});
     }
 
+    /**
+     * 通过uid获取用户详细信息
+     * @param {String} userId 用户Id
+     */
+    this.getUserDetail = function (userId){
+        return fetchGet('/user/detail', {params: {uid: userId}})
+    }
+
+    /**
+     * 获取用户歌单
+     * @param {String} uid
+     */
+    this.getUserPlayList = function (userId){
+        return fetchGet('/user/playlist', {params: {uid: userId}})
+    }
+
+    /**
+     * 获取用户关注列表
+     * @param {String} userId
+     */
+    this.getUserFollows = function (userId){
+        return fetchGet('/user/follows', {params: {uid: userId}})
+    }
+
+    /**
+     * 获取用户粉丝列表
+     * @param {String} userId
+     */
+    this.getUserFans = function (userId){
+        return fetchGet('/user/followeds', {params: {uid: userId}})
+    }
+
+    /**
+     * 获取推荐banner
+     * @param { Number } type [0: PC, 1: Android, 2: iPhone, 3: iPad]
+     */
+    this.getRecommendBanner = function (sysType){
+        if(sysType){
+            return fetchGet('/banner', {params: {type: sysType}})
+        }else{
+            return fetchGet('/banner')
+        }
+    }
+
+    /**
+     * 获取每日推荐歌单
+     */
+    this.getRecommendSongs = function (){
+        return fetchGet('/recommend/resource')
+    }
+
+    /**
+     * 获取歌单详情
+     * @param {String} id 歌单id
+     */
+    this.getPlayListDetail = function (id){
+        return fetchGet('/playlist/detail', {params: {id: id}})
+    }
+
+    /**
+     * 获取音乐的播放url
+     * @param { String } id 音乐id
+     */
+    this.getSongUrl = function (id){
+        return fetchGet('/song/url', {params: {id: id}})
+    }
 }
 
 

@@ -145,7 +145,7 @@ export default {
         .mu-demo-form{
             width: 90%;
             background: rgba(255,255,255,.6);
-            box-shadow: 0 0 10px rgba(255, 0, 0, 0.247);
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             padding: 10px 15px;
             border-radius: 10px;
             position: absolute;
