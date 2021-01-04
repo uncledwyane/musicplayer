@@ -45,6 +45,7 @@ module.exports = {
           'vue$': 'vue/dist/vue.esm.js',
           '@': resolve('src'),
           'components': resolve('src/components'),
+          'assets': resolve('assets')
         }
     },
     module: {
@@ -67,34 +68,19 @@ module.exports = {
                 loader: 'style-loader!css-loader!sass-loader'
             },
             {
-                test: /\.(jpg|png|jpeg|gif)$/,
-                use: [{
-                    loader: 'url-loader',
-                    options: {
-                        limit: 1024 * 50,
-                        outputPath: './assets/images',
-                        publicPath: './assets/images'
-                    }
-                }]
+                test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
+                use: 'url-loader?esModule=false'
             },
             {
                 test: /\.(mp3)$/,
                 use: [{
-                    loader: 'file-loader',
-                    options: {
-                        outputPath: './assets/music',
-                        publicPath: './assets/music'
-                    }
+                    loader: 'file-loader'
                 }]
             },
             {
                 test: /\.(mp4)$/,
                 use: [{
-                    loader: 'file-loader',
-                    options: {
-                        outputPath: './assets/videos',
-                        publicPath: './assets/videos'
-                    }
+                    loader: 'file-loader'
                 }]
             }
         ]

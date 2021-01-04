@@ -9,14 +9,17 @@
           </div>
       </div>
       <div class="playlistTracks">
-          <mu-button color='red' round><mu-icon value='play_arrow'></mu-icon>播放全部</mu-button>
           <div class="tracksWrap">
-              <div class="track" v-for="(track, index) in tracks" :key="track.id">
+                <mu-button color='red' round class="playAllButton" @click="hidePlayPreview"><mu-icon value='play_arrow'></mu-icon>播放全部</mu-button>
+              <div class="track" v-for="(track, index) in tracks" :key="track.id" @click="sendTrackInfoToPlay(track)">
                   <div class="index">{{ index + 1 }}</div>
                   <div class="trackInfo">
                       <h4 class="trackName">{{ track.name }}</h4>
                       <p class="artistName">{{ track.ar | formatArtist(track.ar)}}</p>
                   </div>
+                    <div class="playAction">
+                        <img src="../../../assets/img/Play.png" class="playStatus">
+                    </div>
               </div>
           </div>
       </div>
@@ -26,6 +29,7 @@
 <script>
 import RestAPI from '@/api/restAPI'
 const restAPI = new RestAPI()
+import bus from '@/components/bus'
 export default {
     data(){
         return {
@@ -38,7 +42,15 @@ export default {
             tags: [],
             description: '',
             name: '',
-            privileges: ''
+            privileges: '',
+            iconImg: 'assets/img/Play.png',
+            songIsPlaying: {
+                songId: '',
+                songStatus: {
+                    0: 'pause',
+                    1: 'playing'
+                }
+            }
         }
     },
     filters: {
@@ -64,6 +76,15 @@ export default {
             self.playCount = res.playlist.playCount;
             self.privileges = res.privileges;
         })
+    },
+    methods: {
+        sendTrackInfoToPlay(track){
+            bus.$emit('pushTrackInfo', track);
+            bus.$emit('setPlayPreviewStatus', true);
+        },
+        hidePlayPreview(){
+            bus.$emit('setPlayPreviewStatus', false);
+        }
     }
 }
 </script>
@@ -72,12 +93,13 @@ export default {
     #playDetailWrap{
         width: 100%;
         height: 100%;
-        overflow: scroll;
+        padding-bottom: 50px;
     }
     
     .playlistInfo{
         width: 100%;
         display: flex;
+        padding: 20px;
     }
     .cover{
         width: 30%;
@@ -103,15 +125,15 @@ export default {
         margin-right: 5px;
     }   
     .playlistName{
-        margin: 40px 0 0 0;
         overflow: hidden;
+        margin: 5px;
         height: 20px;
     }
     .creatorName{
-        height: 40px;
+        height: 20px;
         margin: 0;
         display: inline-flex;
-        line-height: 40px;
+        line-height: 20px;
         font-size: 12px;
         align-items: center;
     }
@@ -129,6 +151,9 @@ export default {
     .playlistTracks{
         width: 100%;
         height: 80%;
+        position: relative;
+        margin-top: 50px;
+        padding-bottom: 80px;
     }
     .tracksWrap{
         width: 90%;
@@ -138,9 +163,16 @@ export default {
     }
     .track{
         width: 100%;
-        height: 40px;
+        height: 50px;
         display: flex;
         margin-bottom: 10px;
+        padding: 5px 0;
+    }
+    .track:hover{
+        background: lightgrey;
+    }
+    .track:active{
+        background: lightgrey;
     }
     .index{
         width: 10%;
@@ -150,8 +182,9 @@ export default {
         color: grey;
     }
     .trackInfo{
-        width: 90%;
+        width: 75%;
         height: 40px;
+        overflow: hidden;
         h4{
             margin: 0;
         }
@@ -167,5 +200,20 @@ export default {
         height: 12px;
         font-size: 12px;
         line-height: 12px;
+    }
+    .playAllButton{
+        position: absolute;
+        top: -40px;
+        right: 20px;
+    }
+    .playAction{
+        width: 15%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        .playStatus{
+            width: 30px;
+            height: 30px;
+        }
     }
 </style>
