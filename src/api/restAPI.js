@@ -109,6 +109,14 @@ module.exports = function RestAPI(){
     this.getSongUrl = function (id){
         return fetchGet('/song/url', {params: {id: id}})
     }
+
+    /**
+     * 检测音乐是否可用
+     * @param {String } id
+     */
+    this.checkMusic = function (id){
+        return fetchGet('/check/music', {params: {id: id}})        
+    }
 }
 
 
