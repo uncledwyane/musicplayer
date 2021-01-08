@@ -22,11 +22,11 @@
                     :playingSong="songPlaying"
                 ></playpreview>
             </transition>
-            <mu-bottom-nav color="red">
-                <mu-bottom-nav-item title="首页" icon="home"></mu-bottom-nav-item>
-                <mu-bottom-nav-item title="最爱" icon="favorite"></mu-bottom-nav-item>
-                <mu-bottom-nav-item title="私人" icon="location_on"></mu-bottom-nav-item>
-                <mu-bottom-nav-item title="我的" icon="face"></mu-bottom-nav-item>
+            <mu-bottom-nav color="red" :value='navValue' @change="handleChange">
+                <mu-bottom-nav-item value='homepage' title="首页" icon="home" to='/home/homepage' event='show'></mu-bottom-nav-item>
+                <mu-bottom-nav-item value='favorite' title="最爱" icon="favorite" ></mu-bottom-nav-item>
+                <mu-bottom-nav-item value='private' title="私人" icon="location_on"></mu-bottom-nav-item>
+                <mu-bottom-nav-item value='myinfo' title="我的" icon="face" to='/home/myinfo'></mu-bottom-nav-item>
             </mu-bottom-nav>
         </div>
         <transition name="trackplay">
@@ -56,12 +56,14 @@ export default {
                 songName: "",
                 isPlaying: false,
             },
+            navValue: 'homepage'
         };
     },
     mounted() {
         var self = this;
         var audioCom = self.$refs.songAudio;
         var app = document.getElementById("app");
+        self.navValue = sessionStorage.getItem('navValue');
         bus.$on("setProfileStatus", function (e) {
             self.isShowProfile = e;
         });
@@ -122,6 +124,12 @@ export default {
                 this.$router.push(path);
             }
         },
+        handleChange(val){
+            var self = this;
+            console.log('+++handleChange new Val: ', val);
+            self.navValue = val;
+            sessionStorage.setItem('navValue', val);
+        }
     },
 };
 </script>
@@ -224,11 +232,13 @@ export default {
 }
 .trackplay {
     position: absolute;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
     z-index: 100;
-    top: 0;
+    bottom: 0;
     left: 0;
     width: 100%;
-    height: 100vh;
+    height: 85%;
     background: rgba(255, 255, 255, 0.5);
 }
 </style>

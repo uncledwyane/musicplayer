@@ -9,7 +9,6 @@
                 backgroundRepeat: 'no-repeat',
             }"
         >
-            <div class="blurBg"></div>
             <div class="cover"><img :src="coverImgUrl" alt="" class="coverImg" /></div>
             <div class="creator">
                 <h3 class="playlistName">{{ name }}</h3>

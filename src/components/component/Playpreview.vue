@@ -32,14 +32,6 @@
                 </div>
             </div>
         </div>
-        <div class="playProcess">
-            <mu-linear-progress
-                color="red"
-                mode="determinate"
-                :value="30"
-                v-show="isHideProgressBar"
-            ></mu-linear-progress>
-        </div>
     </div>
 </template>
 
