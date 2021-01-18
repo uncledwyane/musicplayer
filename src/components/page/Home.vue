@@ -1,7 +1,7 @@
 <template>
     <div id="homeWrap">
-        <mu-appbar style="width: 100%" color="red">
-            <mu-button icon slot="left" @click="isShowTrackPlay = true">
+        <mu-appbar style="width: 100%" color="red" class="header">
+            <mu-button icon slot="left">
                 <mu-icon value="menu"></mu-icon>
             </mu-button>
             <span class="nickname">{{ nickname }}</span>
@@ -24,7 +24,7 @@
             </transition>
             <mu-bottom-nav color="red" :value='navValue' @change="handleChange">
                 <mu-bottom-nav-item value='homepage' title="首页" icon="home" to='/home/homepage' event='show'></mu-bottom-nav-item>
-                <mu-bottom-nav-item value='favorite' title="最爱" icon="favorite" ></mu-bottom-nav-item>
+                <mu-bottom-nav-item value='favorate' title="最爱" icon="favorite" ></mu-bottom-nav-item>
                 <mu-bottom-nav-item value='private' title="私人" icon="location_on"></mu-bottom-nav-item>
                 <mu-bottom-nav-item value='myinfo' title="我的" icon="face" to='/home/myinfo'></mu-bottom-nav-item>
             </mu-bottom-nav>
@@ -62,6 +62,7 @@ export default {
     mounted() {
         var self = this;
         var audioCom = self.$refs.songAudio;
+        var audioEle = document.getElementById('songAudio');
         var app = document.getElementById("app");
         self.navValue = sessionStorage.getItem('navValue');
         bus.$on("setProfileStatus", function (e) {
@@ -109,6 +110,22 @@ export default {
                 self.isShowProfile = false;
             }
         });
+        audioEle.addEventListener('play', function (){
+            console.log('+++audio Event: start play');
+        });
+        audioEle.addEventListener('pause', function (){
+            console.log('+++audio Event: start paused');
+        });
+        audioEle.addEventListener('progress', function (){
+            console.log('+++audio Event: audio progress');
+        })
+        audioEle.addEventListener('onplaying', function (){
+            console.log('+++audio Event: audio playing');
+        })
+        audioEle.addEventListener('onloadeddata', function (){
+            console.log('+++audio Event: audio onloadeddata');
+        })
+        
     },
     components: {
         Profile,
@@ -128,6 +145,7 @@ export default {
             var self = this;
             console.log('+++handleChange new Val: ', val);
             self.navValue = val;
+            self.$router.push('/home/' + val)
             sessionStorage.setItem('navValue', val);
         }
     },
@@ -138,7 +156,13 @@ export default {
 #homeWrap {
     width: 100%;
     height: 100vh;
-    overflow: scroll;
+    padding-top: 50px;
+    .header{
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 100;
+    }
     #bottom-navigation {
         position: absolute;
         width: 95%;
@@ -232,13 +256,8 @@ export default {
 }
 .trackplay {
     position: absolute;
-    border-radius: 20px 20px 0 0;
-    overflow: hidden;
     z-index: 100;
     bottom: 0;
     left: 0;
-    width: 100%;
-    height: 85%;
-    background: rgba(255, 255, 255, 0.5);
 }
 </style>

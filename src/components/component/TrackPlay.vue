@@ -12,8 +12,13 @@
                 />
             </div>
             <div class="trackNameAndArtist">
-                <p class="trackName">{{trackName}}</p>
-                <p class="trackArtist">{{trackArtist}}</p>
+                <div class="infoBox">
+                    <p class="trackName">{{trackName}}</p>
+                    <p class="trackArtist">{{trackArtist | formatArtist(trackArtist)}}</p>
+                </div>
+                <div class="likeBox">
+                    <img src="../../../assets/img/like.png" alt="">
+                </div>
             </div>
             <!--TODO 歌词-->
         </div>
@@ -51,15 +56,41 @@
 
 <script>
 import bus from "@/components/bus";
+import {formatArtist} from '@/components/filter';
 export default {
     data() {
         return {
-            coverImgUrl: "https://p1.music.126.net/5uRGDj93JD23p4ejcPPQhA==/109951164151161218.jpg",
-            trackName: "TEST TRACK NAME",
-            trackArtist: "DWYANE WADE, LEBGRON",
+            coverImgUrl: "",
+            trackName: "",
+            trackArtist: [],
             trackTotalTime: "5:22",
-            trackIsPlaying: false
+            trackIsPlaying: false,
+            isLike: {
+                like: '../../../assets/img/like.png',
+                dislike: '../../../assets/img/dislike.png'
+            }
         };
+    },
+    mounted(){
+        var self = this;
+        bus.$on('pushTrackInfo', function (track){
+            var tempTrack = track;
+            self.trackName = tempTrack.name;
+            self.trackArtist = tempTrack.ar;
+            self.coverImgUrl = tempTrack.al.picUrl;
+            self.trackIsPlaying = true;
+        })
+        bus.$on('pauseOrPlay', function (value){
+            if (value == "pause") {
+                self.trackIsPlaying = false;
+            } else if (value == "play") {
+                self.trackIsPlaying = true;
+            } else {
+            }
+        })
+    },
+    filters: {
+        formatArtist
     },
     methods: {
         hide() {
@@ -69,9 +100,11 @@ export default {
             var self = this;
             if(self.trackIsPlaying){
                 self.trackIsPlaying = false;
+                bus.$emit('pauseOrPlay', 'pause');
             }
             else{
                 self.trackIsPlaying = true;
+                bus.$emit('pauseOrPlay', 'play');
             }
         }
     },
@@ -81,7 +114,7 @@ export default {
 <style lang="scss" scoped>
 #trackPlay {
     width: 100%;
-    height: 85%;
+    height: 100%;
     background: #fff;
     .top {
         width: 100%;
@@ -110,20 +143,38 @@ export default {
             align-items: center;
             justify-content: center;
             .cover {
-                width: 250px;
+                width: 80%;
                 border-radius: 20px;
-                box-shadow: 0 20px 20px rgba(0, 0, 0, 0.5);
+                box-shadow: 0 25px 30px rgba(0, 0, 0, 0.5);
+                max-width: 350px;
             }
         }
         .trackNameAndArtist {
+            display: flex;
             width: 100%;
             height: 20%;
-            text-align: center;
-            .trackName {
-                font-size: 20px;
+            padding: 0 10%;
+            align-items: center;
+            .infoBox{
+                width: 80%;
+                .trackName {
+                    font-size: 20px;
+                    overflow: hidden;
+                    white-space: nowrap;
+                }
+                .trackArtist {
+                    color: #666;
+                }
             }
-            .trackArtist {
-                color: #666;
+            .likeBox{
+                width: 20%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                .heart{
+                    width: 30px;
+                    height: 30px;
+                }
             }
             p {
                 margin: 0;
@@ -133,20 +184,18 @@ export default {
     .bottomControl {
         width: 100%;
         height: 45%;
-        background: rgb(255, 255, 255);
-        border-radius: 30px 30px 0 0;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
         transform: translateY(-5%);
         .bottomFunction {
             display: flex;
             align-items: center;
         }
         .trackProgress {
-            width: 100%;
+            width: 90%;
             height: 30%;
             display: flex;
             flex-direction: column;
             padding: 10px 0;
+            margin: 0 auto;
             .trackTime, .progressBar{
                 width: 90%;
                 height: 50%;
@@ -171,7 +220,7 @@ export default {
                     transition: .3s ease all;
                     width: 45px;
                     height: 45px;
-                    border-radius: 15px;
+                    border-radius: 50%;
                     background: rgb(244, 242, 255);
                     display: flex;
                     align-items: center;
@@ -191,17 +240,16 @@ export default {
             .pauseOrPlay {
                 justify-content: center;
                 .pauseOrPlayButton {
-                    transition: .3s ease all;
-                    width: 50px;
-                    height: 50px;
+                    width: 75px;
+                    height: 75px;
                     background: rgb(56, 80, 250);
                     display: flex;
                     align-items: center;
                     justify-content: center;
                     transition: .4s ease all;
                     .pauseOrPlayIcon{
-                        width: 40px;
-                        height: 40px;
+                        width: 50px;
+                        height: 50px;
                         display: block;
                     }
                 }
@@ -218,7 +266,7 @@ export default {
                     transition: .3s ease all;
                     width: 45px;
                     height: 45px;
-                    border-radius: 15px;
+                    border-radius: 50%;
                     background: rgb(244, 242, 255);
                     display: flex;
                     align-items: center;
@@ -251,16 +299,14 @@ export default {
 
 #trackPaused{
     background: url('../../../assets/img/track_play.png') no-repeat center center;
-    background-size: 30px;
+    background-size: 32px;
+    background-position-x: 13px;
 }
 #trackPlaying{
     background: url('../../../assets/img/track_pause.png') no-repeat center center;
-    background-size: 30px;
+    background-size: 40px;
 }
-#trackPausedDiv{
-    border-radius: 17px;
-}
-#trackPlayingDiv{
+#trackPausedDiv, #trackPlayingDiv{
     border-radius: 50%;
 }
 </style>

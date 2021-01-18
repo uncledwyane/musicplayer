@@ -7,6 +7,7 @@
                 background: 'url(' + coverImgUrl + ')',
                 backgroundSize: 'contain',
                 backgroundRepeat: 'no-repeat',
+                backgroundWidth: '100%'
             }"
         >
             <div class="cover"><img :src="coverImgUrl" alt="" class="coverImg" /></div>
@@ -58,6 +59,7 @@
 
 <script>
 import RestAPI from "@/api/restAPI";
+import {formatArtist} from '@/components/filter';
 const restAPI = new RestAPI();
 import bus from "@/components/bus";
 export default {
@@ -82,13 +84,7 @@ export default {
         };
     },
     filters: {
-        formatArtist(artists) {
-            var artistNames = [];
-            for (var i = 0; i < artists.length; i++) {
-                artistNames.push(artists[i].name);
-            }
-            return artistNames.toString();
-        },
+        formatArtist
     },
     created() {
         var self = this;
@@ -138,10 +134,11 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#playDetailWrap {
+.playDetailWrap {
     width: 100%;
-    height: 100%;
+    height: 100vh;
     padding-bottom: 50px;
+    overflow: scroll;
 }
 
 .playlistInfo {
@@ -241,6 +238,8 @@ p {
     width: 100%;
     height: 28px;
     line-height: 28px;
+    overflow: hidden;
+    white-space: nowrap;
 }
 .artistName {
     width: 100%;

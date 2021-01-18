@@ -2,7 +2,7 @@
     <div id="playPreview">
         <div class="upInfo">
             <div class="trackCover">
-                <img :src="trackInfo.al.picUrl" class="cover" />
+                <img :src="trackInfo.al.picUrl" class="cover" @click="showTrackPlay"/>
             </div>
             <div class="playControl">
                 <div class="trackInfo">
@@ -78,6 +78,9 @@ export default {
                 bus.$emit("pauseOrPlay", "play");
             }
         },
+        showTrackPlay(){
+            bus.$emit('setTrackPlayStatus', true);
+        }
     },
 };
 </script>
