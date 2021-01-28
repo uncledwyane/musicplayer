@@ -1,6 +1,6 @@
 <template>
-  <div id="homepage">
-      HomePage
+  <div id="browse">
+      Browse
   </div>
 </template>
 
@@ -12,7 +12,7 @@ export default {
 
 <style lang='scss' scoped>
     @import '../scss/mixins.scss';
-    #homepage{
+    #browse{
         @include display-center;
         width: 100%;
         height: 100%;

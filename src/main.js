@@ -9,6 +9,7 @@ import theme from 'muse-ui/lib/theme'
 import 'muse-ui/dist/muse-ui.css'
 import Axios from 'axios'
 import store from '@/store/index.js'
+import CustomTheme from '@/components/theme'
 
 
 Vue.use(VueRouter)

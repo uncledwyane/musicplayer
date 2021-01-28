@@ -1,106 +1,150 @@
 <template>
-  <div id="profileWrap">
-        <div class="content">
-            <div class="avatarWrap">
-                <img :src="avatarUrl" alt="Avatar" class="avatar">
-                <span class="nickname">{{nickname}}</span>
+    <div id="profile_wrap">
+        <div id="my_head_and_info">
+            <!-- 头像、昵称、其他信息 -->
+            <div class="header_img">
+                <img src="../../../assets/img/header.png" alt="" class="header" />
             </div>
-            <div class="routerGroup">
-                <mu-button flat class="routerButton" @click="gotoPath('/home/homepage')"><mu-icon value='home'></mu-icon>  首页</mu-button>
-                <mu-button flat class="routerButton" @click="gotoPath('/home/favorate')"><mu-icon value='favorite'></mu-icon>  最爱</mu-button>
-                <mu-button flat class="routerButton" @click="gotoPath('/home/myinfo')"><mu-icon value='face'></mu-icon>  我的</mu-button>
+            <div class="other_info">
+                <p class="nickname">Dwyane Wade</p>
+                <p class="otherinfo">sweetywangbo@gmail.com</p>
             </div>
         </div>
-        <mu-button class="logoutButton" color='red' @click="logout">退出登录</mu-button>
-        <mu-dialog title="您确定要退出吗?" width="80%" max-width="80%"  :esc-press-close="false" :overlay-close="true" :open.sync="openAlert">
-            <mu-button slot="actions" flat color="red" @click="confirmLogout">确定</mu-button>
-            <mu-button slot="actions" flat color="primary" @click="cancelLogout">取消</mu-button>
-        </mu-dialog>
-        <mu-button fab small @click="hideProfile" class="closeProfileButton">X</mu-button>
-  </div>
+        <div id="option_nav">
+            <!-- 导航信息、路由 -->
+            <div class="option" :class="{ option_active: currentOption == option.optionName }" v-for="(option, index) in options" :key="index" @click="goToOption(option.optionName)">
+                <span class="option_icon">
+                    <i :class="option.icon"></i>
+                </span>
+                <span class="option_name">{{ option.optionName }}</span>
+            </div>
+        </div>
+        <div id="my_music">
+            <!-- 关于我、路由 -->
+        </div>
+        <div id="platform_info">
+            <!-- 系统信息、浏览器信息 -->
+        </div>
+    </div>
 </template>
 
 <script>
-import bus from '@/components/bus'
 export default {
-    data(){
+    data() {
         return {
-            nickname: localStorage.getItem('nickname'),
-            avatarUrl: localStorage.getItem('avatarUrl'),
-            backgroundUrl: localStorage.getItem('backgroundUrl'),
-            city: localStorage.getItem('city'),
-            signature: localStorage.getItem('signature'),
-            openAlert: false
-        }
+            currentOption: "",
+            options: [
+                {
+                    icon: "fa fa-home",
+                    optionName: "Home",
+                },
+                {
+                    icon: "fa fa-folder",
+                    optionName: "Album",
+                },
+                {
+                    icon: "fa fa-compass",
+                    optionName: "Browse",
+                },
+                {
+                    icon: "fa fa-user",
+                    optionName: "Artists",
+                },
+                {
+                    icon: "fa fa-video-camera",
+                    optionName: "Videos",
+                },
+                {
+                    icon: "fa fa-user-circle",
+                    optionName: "MyInfo",
+                },
+            ],
+        };
+    },
+    mounted() {
+        var self = this;
+        self.currentOption = sessionStorage.getItem("optionName");
     },
     methods: {
-        hideProfile(){
-            bus.$emit('setProfileStatus', false);
+        goToOption(optionName) {
+            var self = this;
+            sessionStorage.setItem("optionName", optionName);
+            self.currentOption = optionName;
+            self.$router.push('/' + optionName);
         },
-        logout(){
-            this.openAlert = true;
-        },
-        confirmLogout(){
-
-        },
-        cancelLogout(){
-            this.openAlert = false;
-        },
-        gotoPath(path){
-            var currentPath = this.$route.path;
-            if(currentPath == path){
-                console.log('same');
-            }else{
-                this.hideProfile();
-                this.$router.push(path);
-            }
-        }
-    }
-}
+    },
+};
 </script>
-
-<style lang='css' scoped>
-    #profileWrap{
-        width: 100%;
-        height: 100vh;
-    }
-    .avatarWrap{
-        width: 100%;
-        height: 90px;
-        display: flex;
-        flex-direction: column;
-        padding-top: 10px;
-    }
-    .avatar{
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        align-self: center;
-    }
-    .closeProfileButton{
-        position: absolute;
-        right: 5px;
-        top: 5px;
-    }
-    .nickname{
-        align-self: center;
-    }
-    .logoutButton{
-        position: absolute;
-        bottom: 10px;
-        left: 50%;
-        transform: translateX(-50%);
-    }
-    .routerGroup{
-        width: 90%;
-        border-radius: 15px;
-        background: #fff;
-        margin: 0 auto;
-        overflow: hidden;
-    }
-    .routerButton{
-        width: 100%;
-        height: 40px;
-        letter-spacing: 5px;
-    }
+<style lang="scss" scoped>
+@import "../scss/mixins.scss";
+#profile_wrap{
+    position: relative;
+}
+p {
+    margin: 0;
+    padding: 0;
+}
+#my_head_and_info {
+    height: 25%;
+    margin-top: 30px;
+}
+#option_nav {
+    margin-top: 20px;
+    padding: 20px 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+}
+.option {
+    height: 30px;
+    text-align: left;
+    transition: all 0.3s ease;
+    line-height: 30px;
+    margin-bottom: 10px;
+}
+.option:hover {
+    cursor: pointer;
+    color: $default-color;
+}
+.option_active {
+    color: $default-color;
+}
+.option_icon {
+    width: 14px;
+    height: 14px;
+    text-align: center;
+    line-height: 14px;
+    display: inline-block;
+}
+.option_name {
+    display: inline-block;
+    margin-left: 10px;
+}
+.header_img {
+    @include display-center;
+}
+.header {
+    width: 90px;
+    border-radius: 50%;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+}
+.other_info {
+    text-align: center;
+}
+.nickname {
+    margin-top: 10px;
+}
+.otherinfo {
+    color: rgb(144, 150, 169);
+}
+#platform_info{
+    width: 170px;
+    height: 90px;
+    background: #e8ecf7;
+    border-radius: 20px;
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+}
 </style>
