@@ -76,11 +76,7 @@ export default {
   .routerview-enter-active, .routerview-leave-active{
     transition: all .5s ease;
   }
-  .routerview-enter{
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-  .routerview-leave-to{
+  .routerview-leave-to, .routerview-enter{
     transform: translateY(100%);
     opacity: 0;
   }

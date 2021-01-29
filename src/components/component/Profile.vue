@@ -2,10 +2,10 @@
     <div id="profile_wrap">
         <div id="my_head_and_info">
             <!-- 头像、昵称、其他信息 -->
-            <div class="header_img">
+            <div class="header_img" v-show="isLogin">
                 <img src="../../../assets/img/header.png" alt="" class="header" />
             </div>
-            <div class="other_info">
+            <div class="other_info" v-show="isLogin">
                 <p class="nickname">Dwyane Wade</p>
                 <p class="otherinfo">sweetywangbo@gmail.com</p>
             </div>
@@ -14,7 +14,7 @@
             <!-- 导航信息、路由 -->
             <div class="option" :class="{ option_active: currentOption == option.optionName }" v-for="(option, index) in options" :key="index" @click="goToOption(option.optionName)">
                 <span class="option_icon">
-                    <i :class="option.icon"></i>
+                    <i :class="option.icon" class="navIcon"></i>
                 </span>
                 <span class="option_name">{{ option.optionName }}</span>
             </div>
@@ -29,10 +29,15 @@
 </template>
 
 <script>
+import {mapState} from 'vuex'
+
 export default {
+    computed: mapState([
+        'isLogin'
+    ]),
     data() {
         return {
-            currentOption: "",
+            currentOption: "home",
             options: [
                 {
                     icon: "fa fa-home",
@@ -90,17 +95,20 @@ p {
 }
 #option_nav {
     margin-top: 20px;
-    padding: 20px 50px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    align-items: left;
+    align-items: center;
 }
 .option {
+    width: 60%;
     height: 30px;
     text-align: left;
     transition: all 0.3s ease;
     line-height: 30px;
     margin-bottom: 10px;
+    display: flex;
+    align-items: center;
 }
 .option:hover {
     cursor: pointer;
@@ -115,6 +123,9 @@ p {
     text-align: center;
     line-height: 14px;
     display: inline-block;
+}
+.navIcon{
+    float: left;
 }
 .option_name {
     display: inline-block;
@@ -138,7 +149,7 @@ p {
     color: rgb(144, 150, 169);
 }
 #platform_info{
-    width: 170px;
+    width: 80%;
     height: 90px;
     background: #e8ecf7;
     border-radius: 20px;
