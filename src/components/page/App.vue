@@ -2,7 +2,7 @@
     <div id="app" :style="{ 'background-color': mainColor }">
         <profile id="profile"></profile>
         <toptool id="toptool"></toptool>
-        <transition name="routerview">
+        <transition name="routerview"  mode="in-out" >
             <router-view></router-view>
         </transition>
     </div>
@@ -54,6 +54,7 @@ export default {
         position: absolute;
         left: 0;
         top: 0;
+        z-index: 1;
     }
     #toptool{
       position: absolute;
@@ -62,9 +63,10 @@ export default {
       height: 60px;
       width: 83%;
       border-radius: 0 20px 0 0;
-      border-bottom: 1px solid rgb(233, 233, 233);
       display: flex;
       align-items: center;
+      background: #fff;
+      z-index: 1;
     }
 } 
 
@@ -76,8 +78,11 @@ export default {
   .routerview-enter-active, .routerview-leave-active{
     transition: all .5s ease;
   }
-  .routerview-leave-to, .routerview-enter{
-    transform: translateY(100%);
+  .routerview-enter, .routerview-leave-to{
+    transform: translateY(-100%);
     opacity: 0;
+  }
+  .routerview-enter-to{
+      opacity: 1;
   }
 </style>

@@ -15,6 +15,9 @@ export default {
     #browse{
         @include display-center;
         width: 100%;
+        position: absolute;
+        z-index: 0;
         height: 100%;
+        background: indigo;
     }
 </style>

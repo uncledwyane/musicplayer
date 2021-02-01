@@ -15,6 +15,9 @@ export default {
     #album{
         @include display-center;
         width: 100%;
+        position: absolute;
         height: 100%;
+        z-index: 0;
+        background: lightblue;
     }
 </style>

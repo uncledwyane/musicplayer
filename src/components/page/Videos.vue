@@ -15,6 +15,9 @@ export default {
     #videos{
         @include display-center;
         width: 100%;
+        position: absolute;
         height: 100%;
+        z-index: 0;
+        background: yellow;
     }
 </style>
