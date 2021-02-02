@@ -36,9 +36,9 @@ export default {
         border-radius: 20px;
         padding: 5px 10px;
         background: rgba(255,255,255,.1);
-        color: #9ea8c4;
-        /* position: absolute; */
+        color: #d9e1f7;
         margin-left: 30px;
+        height: 25px;
 
     }
     #search_com:focus{

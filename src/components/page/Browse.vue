@@ -14,10 +14,11 @@ export default {
     @import '../scss/mixins.scss';
     #browse{
         @include display-center;
-        width: 100%;
+        width: 83%;
         position: absolute;
         z-index: 0;
         height: 100%;
+        left: 17%;
         background: indigo;
     }
 </style>

@@ -3,8 +3,11 @@
         <profile id="profile"></profile>
         <toptool id="toptool"></toptool>
         <transition name="routerview"  mode="in-out" >
-            <router-view></router-view>
+            <keep-alive>
+                <router-view></router-view>
+            </keep-alive>
         </transition>
+        <audio ref="musicAudio"></audio>
     </div>
 </template>
 
@@ -31,15 +34,13 @@ export default {
 @import "../scss/mixins.scss";
 @import "../scss/theme.scss";
 #app {
-    width: 100vw * (16 / 25) + 5vw;
-    height: 100vw * (9 / 25) + 5vw;
-    background-size: cover;
+    width: 1280px;
+    height: 720px;
     z-index: 0;
     overflow: hidden;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     @include position-center;
     border-radius: 20px;
-    position: relative;
     padding: 60px 0 0 12%;
     #profile {
         width: 17%;
@@ -65,7 +66,7 @@ export default {
       border-radius: 0 20px 0 0;
       display: flex;
       align-items: center;
-      background: #fff;
+      background:#f9fafe;
       z-index: 1;
     }
 } 

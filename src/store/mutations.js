@@ -6,6 +6,12 @@ const mutations = {
     },
     setHighQualityPlaylist(state, playlist){
         state.highQualityPlaylist = playlist;  
+    },
+    setTrackList(state, list){
+        state.trackList = list;
+    },
+    setPlayingTrack(state, track){
+        state.songIsPlaying = track;
     }
 }
 

@@ -14,10 +14,11 @@ export default {
     @import '../scss/mixins.scss';
     #videos{
         @include display-center;
-        width: 100%;
+        width: 83%;
         position: absolute;
         height: 100%;
         z-index: 0;
+        left: 17%;
         background: yellow;
     }
 </style>
