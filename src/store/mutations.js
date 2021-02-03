@@ -17,6 +17,9 @@ const mutations = {
         for(var i in obj){
             state.songIsPlaying[i] = obj[i]; 
         }
+    },
+    setLoginState(state, value){
+        state.isLogin = value;
     }
 }
 
