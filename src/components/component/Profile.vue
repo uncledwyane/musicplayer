@@ -42,6 +42,7 @@ export default {
                 {
                     icon: "fa fa-home",
                     optionName: "Home",
+                    showName: '首页推荐'
                 },
                 {
                     icon: "fa fa-folder",

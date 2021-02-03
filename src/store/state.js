@@ -10,7 +10,10 @@ var state = {
         name: '',
         coverImg: '',
         state: 'pause',
-        drtime: 0
+        drtime: 0,
+        playUrl: '',
+        artists: '',
+        playState: false
     }
 }
 

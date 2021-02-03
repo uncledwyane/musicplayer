@@ -2,20 +2,20 @@
     <div id="app" :style="{ 'background-color': mainColor }">
         <profile id="profile"></profile>
         <toptool id="toptool"></toptool>
-        <transition name="routerview"  mode="in-out" >
+        <transition name="routerview" mode="in-out">
             <keep-alive>
                 <router-view></router-view>
             </keep-alive>
         </transition>
-        <audio ref="musicAudio"></audio>
+        <audio ref="musicAudio" id="musicAudio"></audio>
     </div>
 </template>
 
 <script>
-import theme from "@/components/scss/theme.scss"
-import themeCSS from "@/components/theme"
-import Profile from "@/components/component/Profile"
-import Toptool from '@/components/component/Toptool'
+import theme from "@/components/scss/theme.scss";
+import themeCSS from "@/components/theme";
+import Profile from "@/components/component/Profile";
+import Toptool from "@/components/component/Toptool";
 export default {
     data() {
         return {
@@ -25,7 +25,7 @@ export default {
     mounted() {},
     components: {
         Profile,
-        Toptool
+        Toptool,
     },
 };
 </script>
@@ -57,33 +57,35 @@ export default {
         top: 0;
         z-index: 1;
     }
-    #toptool{
-      position: absolute;
-      top: 0;
-      left: 17%;
-      height: 60px;
-      width: 83%;
-      border-radius: 0 20px 0 0;
-      display: flex;
-      align-items: center;
-      background:#f9fafe;
-      z-index: 1;
+    #toptool {
+        position: absolute;
+        top: 0;
+        left: 17%;
+        height: 60px;
+        width: 83%;
+        border-radius: 0 20px 0 0;
+        display: flex;
+        align-items: center;
+        background: #f9fafe;
+        z-index: 1;
     }
-} 
+}
 
-  p {
-      margin: 0;
-      padding: 0;
-  }
+p {
+    margin: 0;
+    padding: 0;
+}
 
-  .routerview-enter-active, .routerview-leave-active{
-    transition: all .5s ease;
-  }
-  .routerview-enter, .routerview-leave-to{
+.routerview-enter-active,
+.routerview-leave-active {
+    transition: all 0.5s ease;
+}
+.routerview-enter,
+.routerview-leave-to {
     transform: translateY(-100%);
     opacity: 0;
-  }
-  .routerview-enter-to{
-      opacity: 1;
-  }
+}
+.routerview-enter-to {
+    opacity: 1;
+}
 </style>

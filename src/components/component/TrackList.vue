@@ -1,6 +1,6 @@
 <template>
     <div id="track_list">
-        <div class="track_item" v-for="(track, index) in tracks" :key="track.id">
+        <div class="track_item" v-for="(track, index) in tracks" :key="track.id" :class="{track_isplaying: track.id == songIsPlaying.id && playingState}">
             <div class="track_order">
                 <span class="order_num">{{ index + 1 }}</span>
             </div>
@@ -21,12 +21,16 @@
                     class="play_state"
                     @click="
                         {
-                            playingState == true ? playOrPause(track) : play(track);
+                            playingState == true
+                                ? playOrPause('pause', track)
+                                : playOrPause('play', track);
                         }
                     "
                     :class="{
-                        play_state_play: playingState == true,
-                        play_state_pause: playingState == false,
+                        play_state_play:
+                            playingState == true && track.id == songIsPlaying.id,
+                        play_state_pause:
+                            playingState == false && track.id == songIsPlaying.id,
                     }"
                 ></span>
             </div>
@@ -35,11 +39,15 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from "vuex";
+import { mapState, mapMutations, mapActions } from "vuex"
+import API from '@/api/API'
+import bus from '@/components/bus'
+const api = new API()
 export default {
     data() {
         return {
             playingState: false,
+            musicEle: null,
         };
     },
     computed: {
@@ -47,6 +55,25 @@ export default {
             tracks: "trackList",
             songIsPlaying: "songIsPlaying",
         }),
+    },
+    mounted() {
+        var self = this;
+        self.musicEle = document.getElementById("musicAudio");
+        bus.$on('changePlayState', function (state){
+            console.log('组件切换状态， ', state);
+            self.playingState = state;
+            if(state == 'pause'){
+                self.musicEle.pause();
+                self.updatePlayingTrack({
+                    playState: false
+                })
+            }else{
+                self.musicEle.play();
+                self.updatePlayingTrack({
+                    playState: false
+                })
+            }
+        })
     },
     filters: {
         trackArtistsFilter(artists) {
@@ -65,19 +92,65 @@ export default {
         },
     },
     methods: {
-        ...mapMutations(["setPlayingTrack"]),
-        playOrPause() {
+        ...mapMutations(["setPlayingTrack", "updatePlayingTrack"]),
+        playOrPause(state, track) {
+            console.log(`暂停或者播放： 把 ${track.name}切换为 ${state}`);
             var self = this;
-            self.playingState = !self.playingState;
+            var tempObj = {
+                id: track.id,
+                name: track.name,
+                coverImg: track.al.picUrl,
+                state: "",
+                drtime: track.dt,
+                playUrl: "",
+                artists: self.formatTrackArtists(track.ar)
+            };
+            if (self.songIsPlaying.id && self.songIsPlaying.id != track.id || !self.songIsPlaying.id) {
+                api.getSongUrl(track.id).then(function (res) {
+                    tempObj.state = "play";
+                    tempObj.playUrl = res.data[0].url;
+                    self.musicEle.src = tempObj.playUrl;
+                    self.musicEle.play();
+                    self.playingState = true;
+                    self.updatePlayingTrack({
+                        playState: true
+                    })
+                    self.setPlayingTrack(tempObj);
+                })
+            } else {
+                if(self.songIsPlaying.id == track.id && self.songIsPlaying.playUrl){
+                    console.log(`当前点击的是同一首歌，切换状态为 ${state}`);
+                    if (state == "pause") {
+                        self.musicEle.pause();
+                        self.playingState = false;
+                        // tempObj.state = "pause";
+                        // tempObj.playUrl = self.songIsPlaying.playUrl;
+                        self.updatePlayingTrack({
+                            state: 'pause',
+                            playState: false
+                        });
+                    } else {
+                        self.musicEle.play();
+                        self.playingState = true;
+                        // tempObj.state = "play";
+                        // tempObj.playUrl = self.songIsPlaying.playUrl;
+                        self.updatePlayingTrack({
+                            state: 'play',
+                            playState: true
+                        });
+                    }
+                }
+            }
         },
-        play(track) {
-            var self = this;
-            self.playingState = true;
-        },
-        pause(track) {
-            var self = this;
-            self.playingState = false;
-        },
+        formatTrackArtists(artists){
+            var tempArray = new Array();
+            for (var i = 0; i < artists.length; i++) {
+                tempArray.push(artists[i].name);
+            }
+            var temp = tempArray.toString();
+            var final = temp.substr(0, temp.length);
+            return final;
+        }
     },
 };
 </script>
@@ -97,6 +170,7 @@ export default {
     align-items: center;
     margin-bottom: 10px;
     font-size: 12px;
+    box-sizing: border-box;
 }
 .track_order {
     width: 5%;
@@ -140,6 +214,8 @@ export default {
     height: 32px;
     transition: all ease 0.3s;
     cursor: pointer;
+    background: url("assets/img/play.png") center center no-repeat;
+    background-size: contain;
 }
 .play_state_play {
     background: url("assets/img/pause.png") center center no-repeat;
@@ -148,5 +224,8 @@ export default {
 .play_state_pause {
     background: url("assets/img/play.png") center center no-repeat;
     background-size: contain;
+}
+.track_isplaying{
+    border-left: 5px solid rgb(19, 34, 122);
 }
 </style>
