@@ -14,7 +14,7 @@
                 <span class="artists">{{ track.ar | trackArtistsFilter(track.ar) }}</span>
             </div>
             <div class="track_time">
-                <span class="song_time">3:25</span>
+                <span class="song_time">{{ track.dt | trackTimeFilter(track.dt) }}</span>
             </div>
             <div class="track_play">
                 <span
@@ -90,6 +90,18 @@ export default {
                 return final;
             }
         },
+        trackTimeFilter(time){
+            var tempTime = time.toString();
+            var seconds = tempTime.substr(0, 3); // 截取前面三位，为秒
+            var mSeconds = tempTime.substr(3, 3); // 截取后面三位，为不满一秒的
+            var toMinites = (seconds / 60).toString().split('.')[0];
+            var toSeconds = seconds - (toMinites * 60)
+            if(toSeconds < 10){
+                toSeconds = '0' + toSeconds;
+            }
+            var finalTime = toMinites + ':' + toSeconds;
+            return finalTime; 
+        }
     },
     methods: {
         ...mapMutations(["setPlayingTrack", "updatePlayingTrack"]),
