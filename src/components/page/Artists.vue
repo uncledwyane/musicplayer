@@ -14,9 +14,9 @@ export default {
     @import '../scss/mixins.scss';
     #artists{
         @include display-center;
-        width: 83%;
+        width: 88%;
         position: absolute;
-        left: 17%;
+        left: 12%;
         z-index: 0;
         height: 100%;
         background: pink;

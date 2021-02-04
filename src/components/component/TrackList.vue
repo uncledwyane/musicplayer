@@ -1,6 +1,6 @@
 <template>
     <div id="track_list">
-        <div class="track_item" v-for="(track, index) in tracks" :key="track.id" :class="{track_isplaying: track.id == songIsPlaying.id && playingState}">
+        <div class="track_item" v-for="(track, index) in tracks" :key="track.id" :class="{track_isplaying: track.id == songIsPlaying.id && playingState}" @click="playOrPause('play', track)">
             <div class="track_order">
                 <span class="order_num">{{ index + 1 }}</span>
             </div>
@@ -19,13 +19,6 @@
             <div class="track_play">
                 <span
                     class="play_state"
-                    @click="
-                        {
-                            playingState == true
-                                ? playOrPause('pause', track)
-                                : playOrPause('play', track);
-                        }
-                    "
                     :class="{
                         play_state_play:
                             playingState == true && track.id == songIsPlaying.id,
@@ -165,24 +158,32 @@ export default {
 
 <style lang="scss" scoped>
 @import "../scss/mixins.scss";
+@import '../scss/theme.scss';
 #track_list {
     width: 100%;
-    display: flex;
-    flex-direction: column;
+    height: 100%;
+    overflow: auto;
+    box-sizing: border-box;
+    padding-bottom: 20px;
 }
 .track_item {
     width: 98%;
     height: 50px;
     display: flex;
-    background: #fff;
+    background: $front-color-dark;
     align-items: center;
     margin-bottom: 10px;
     font-size: 12px;
     box-sizing: border-box;
+    border-radius: 6px;
+}
+.track_item:hover{
+    border-left: 5px solid $font-highlight-color-dark;
 }
 .track_order {
     width: 5%;
     @include display-center;
+    color: #fff;
 }
 .track_cover {
     display: flex;
@@ -195,11 +196,12 @@ export default {
     width: 30%;
     display: flex;
     justify-content: flex-start;
+    color: #fff;
 }
 .track_artists {
     width: 30%;
     display: flex;
-    color: #a1aac7;
+    color: #afafaf;
     justify-content: flex-start;
 }
 .track_time {
@@ -234,6 +236,6 @@ export default {
     background-size: contain;
 }
 .track_isplaying{
-    border-left: 5px solid rgb(19, 34, 122);
+    border-left: 5px solid $font-highlight-color-dark;
 }
 </style>

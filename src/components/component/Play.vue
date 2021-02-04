@@ -48,16 +48,18 @@ export default {
         ...mapMutations(['updatePlayingTrack']),
         playOrPause(value){
             var self = this;
-            if(value == 'pause'){
-                self.updatePlayingTrack({
-                    state: 'pause'
-                })
-                bus.$emit('changePlayState', 'pause');
-            }else{
-                self.updatePlayingTrack({
-                    state: 'play'
-                })
-                bus.$emit('changePlayState', 'play');
+            if(self.songIsPlaying.id){
+                if(value == 'pause'){
+                    self.updatePlayingTrack({
+                        state: 'pause'
+                    })
+                    bus.$emit('changePlayState', 'pause');
+                }else{
+                    self.updatePlayingTrack({
+                        state: 'play'
+                    })
+                    bus.$emit('changePlayState', 'play');
+                }
             }
         }
     }
@@ -65,6 +67,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+    @import '../scss/theme.scss';
     h2, p{
         margin: 0px;
         padding: 0px;
@@ -72,7 +75,7 @@ export default {
     #play_wrap{
         width: 100%;
         height: 90%;
-        background: #fff;
+        background: $front-color-dark;
         box-sizing: border-box;
         border-radius: 10px;
         display: flex;
@@ -88,7 +91,7 @@ export default {
         margin: 0px auto;
         padding: 10px;
         box-sizing: border-box;
-        background: #fff;
+        background: $front-color-dark;
         box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         position: relative;
         top: 20px;
@@ -108,8 +111,11 @@ export default {
         /* display: flex; */
         text-align: center;
     }
+    .track_name{
+        color: $font-highlight-color-dark;
+    }
     .track_artists{
-        color: #a1aac7;
+        color:$font-color-dark;
         font-size: 12px;
     }
     .control_box{
@@ -135,8 +141,9 @@ export default {
         height: 100%;
         display: flex;
         align-items: center;
-        color: #a1aac7;
+        color: #bebebe;
         font-size: 25px;
+        transition: all ease .3s;
     }
     .pause_or_play{
         justify-content: center;
@@ -146,5 +153,9 @@ export default {
     }
     .next_track{
         justify-content: flex-start;
+    }
+    .pause_or_play:hover, .previous_track:hover, .next_track:hover{
+        cursor: pointer;
+        color: $font-color-dark;
     }
 </style>

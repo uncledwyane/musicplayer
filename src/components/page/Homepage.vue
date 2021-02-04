@@ -2,7 +2,7 @@
     <div id="homepage">
         <div class="hot_playlists">
             <div class="title">
-                <h2>Recommend playlist for you</h2>
+                <h2>精品歌单推荐</h2>
                 <div class="change_playlist">
                     <i class="fa fa-angle-left" @click="updatePlaylist('previous')"></i>
                     <i class="fa fa-angle-right" @click="updatePlaylist('next')"></i>
@@ -173,21 +173,27 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../scss/mixins.scss";
+@import '../scss/theme.scss';
 h2,
 p {
     margin: 0;
     padding: 0;
+    font-weight: 200;
 }
-@import "../scss/mixins.scss";
+h2{
+    color: $font-highlight-color-dark;
+}
+
 #homepage {
     display: flex;
-    width: 83%;
+    width: 88%;
     height: calc(100% - 60px);
     position: absolute;
     flex-direction: column;
-    background: #f9fafe;
+    background: $background-color-dark;
     z-index: 0;
-    left: 17%;
+    left: 12%;
 }
 .hot_playlists {
     width: 100%;
@@ -210,7 +216,7 @@ p {
     @include display-center;
 }
 .playlist_count {
-    color: #a1aac7;
+    color:$font-color-dark;
     font-size: 12px;
 }
 .playlist_cover:hover {
@@ -228,6 +234,7 @@ p {
     -webkit-line-clamp: 2;
     -webkit-box-orient: vertical;
     margin-bottom: 5px;
+    color: #fff;
 }
 .cover_img {
     width: 130px;
@@ -281,9 +288,9 @@ p {
     width: 100%;
     margin-top: 10px;
     box-sizing: border-box;
-    padding-bottom: 10px;
+    padding-bottom: 15px;
     height: 90%;
-    overflow: scroll;
+    overflow: hidden;
 }
 ::-webkit-scrollbar {
     width: 5px;
@@ -291,9 +298,10 @@ p {
 ::-webkit-scrollbar-track {
     width: 10px;
     background: none;
+    display: none;
 }
 ::-webkit-scrollbar-thumb {
-    background: #a1aac7;
+    background: $front-color-dark;
     border-radius: 5px;
 }
 ::-webkit-scrollbar-button {

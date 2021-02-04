@@ -7,7 +7,6 @@
             </div>
             <div class="other_info" v-show="isLogin">
                 <p class="nickname">Dwyane Wade</p>
-                <p class="otherinfo">sweetywangbo@gmail.com</p>
             </div>
         </div>
         <div id="option_nav">
@@ -16,14 +15,11 @@
                 <span class="option_icon">
                     <i :class="option.icon" class="navIcon"></i>
                 </span>
-                <span class="option_name">{{ option.optionName }}</span>
+                <span class="option_name">{{ option.showName }}</span>
             </div>
         </div>
         <div id="my_music">
             <!-- 关于我、路由 -->
-        </div>
-        <div id="platform_info">
-            <!-- 系统信息、浏览器信息 -->
         </div>
     </div>
 </template>
@@ -42,27 +38,32 @@ export default {
                 {
                     icon: "fa fa-home",
                     optionName: "Home",
-                    showName: '首页推荐'
+                    showName: '首页'
                 },
                 {
                     icon: "fa fa-folder",
                     optionName: "Album",
+                    showName: '专辑'
                 },
                 {
                     icon: "fa fa-compass",
                     optionName: "Browse",
+                    showName: '浏览'
                 },
                 {
                     icon: "fa fa-user",
                     optionName: "Artists",
+                    showName: '歌手'
                 },
                 {
                     icon: "fa fa-video-camera",
                     optionName: "Videos",
+                    showName: '视频'
                 },
                 {
                     icon: "fa fa-user-circle",
                     optionName: "MyInfo",
+                    showName: '关于'
                 },
             ],
         };
@@ -83,6 +84,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 @import "../scss/mixins.scss";
+@import '../scss/theme.scss';
 #profile_wrap{
     position: relative;
 }
@@ -110,13 +112,14 @@ p {
     margin-bottom: 10px;
     display: flex;
     align-items: center;
+    color: $font-color-dark;
 }
 .option:hover {
     cursor: pointer;
-    color: $default-color;
+    color: $font-highlight-color-dark;
 }
 .option_active {
-    color: $default-color;
+    color: $font-highlight-color-dark;
 }
 .option_icon {
     width: 14px;
@@ -145,6 +148,7 @@ p {
 }
 .nickname {
     margin-top: 10px;
+    color: $font-highlight-color-dark;
 }
 .otherinfo {
     color: rgb(144, 150, 169);

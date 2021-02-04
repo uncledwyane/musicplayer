@@ -18,6 +18,7 @@ export default {
 </script>
 
 <style lang='scss' scoped>
+    @import '../scss/theme.scss';
     #notice_and_setting{
         position: absolute;
         right: 20px;
@@ -28,29 +29,28 @@ export default {
     }
     .fa:hover{
         cursor: pointer;
-        color: rgb(107, 107, 255) !important;
+        color: $font-highlight-color-dark !important;
     }
     #search_com{
         width: 400px;
-        border: 1px solid#eff0f6;
+        border: 1px solid #616161;
         border-radius: 20px;
         padding: 5px 10px;
-        background: rgba(255,255,255,.1);
-        color: #d9e1f7;
+        background: rgb(117 117 117 / 10%);
+        color: $font-highlight-color-dark;
         margin-left: 30px;
         height: 25px;
-
     }
     #search_com:focus{
         border-radius: 20px;
-        color: #9ea8c4;
+        color: $font-highlight-color-dark;
         outline-style: none;
-        border: 1px solid#c4ccfa;
+        border: 1px solid#666666;
     }
     .searchicon{
         position: relative;
         right: 30px;
-        color: #d9defc;
+        color: #656565;
     }
     .notice{
         margin-right: 10px;
