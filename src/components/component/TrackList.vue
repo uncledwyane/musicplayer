@@ -123,8 +123,6 @@ export default {
                     if (state == "pause") {
                         self.musicEle.pause();
                         self.playingState = false;
-                        // tempObj.state = "pause";
-                        // tempObj.playUrl = self.songIsPlaying.playUrl;
                         self.updatePlayingTrack({
                             state: 'pause',
                             playState: false
@@ -132,8 +130,6 @@ export default {
                     } else {
                         self.musicEle.play();
                         self.playingState = true;
-                        // tempObj.state = "play";
-                        // tempObj.playUrl = self.songIsPlaying.playUrl;
                         self.updatePlayingTrack({
                             state: 'play',
                             playState: true
