@@ -20,6 +20,7 @@
                             :alt="playlist.id"
                             class="cover_img"
                             @click="getTrackListById(playlist.id, playlist.name)"
+                            :class="{playlist_playing: playlist.id === playingPlaylistId}"
                         />
                     </div>
                     <div class="playlist_info">
@@ -59,6 +60,7 @@ export default {
             maxIndex: 6,
             showNum: 7, // 要显示在界面上的最多歌单数
             playingPlaylistName: "",
+            playingPlaylistId: ''
         };
     },
     mounted() {
@@ -164,6 +166,7 @@ export default {
         getTrackListById(id, name) {
             var self = this;
             self.playingPlaylistName = name;
+            self.playingPlaylistId = id;
             myApi.getPlayListDetail(id).then(function (res) {
                 self.setTrackList(res.playlist.tracks);
             });
@@ -311,5 +314,8 @@ h2{
     width: 40%;
     /* background: lightblue; */
     padding: 0 20px 10px 20px;
+}
+.playlist_playing{
+    box-shadow: 0 20px 20px rgba(255, 115, 0, 0.5);
 }
 </style>

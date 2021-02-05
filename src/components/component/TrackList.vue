@@ -16,16 +16,11 @@
             <div class="track_time">
                 <span class="song_time">{{ track.dt | trackTimeFilter(track.dt) }}</span>
             </div>
-            <div class="track_play">
-                <span
-                    class="play_state"
-                    :class="{
-                        play_state_play:
-                            playingState == true && track.id == songIsPlaying.id,
-                        play_state_pause:
-                            playingState == false && track.id == songIsPlaying.id,
-                    }"
-                ></span>
+            <div class="track_play" v-show="track.id == songIsPlaying.id">
+                <span class="play_state">
+                    <i class="fa fa-pause-circle" v-show="playingState == 'play' && track.id == songIsPlaying.id"></i>
+                    <i class="fa fa-play-circle" v-show="playingState == 'pause' && track.id == songIsPlaying.id"></i>
+                </span>
             </div>
         </div>
     </div>
@@ -116,7 +111,7 @@ export default {
                     tempObj.playUrl = res.data[0].url;
                     self.musicEle.src = tempObj.playUrl;
                     self.musicEle.play();
-                    self.playingState = true;
+                    self.playingState = 'play';
                     self.updatePlayingTrack({
                         playState: true
                     })
@@ -127,14 +122,14 @@ export default {
                     console.log(`当前点击的是同一首歌，切换状态为 ${state}`);
                     if (state == "pause") {
                         self.musicEle.pause();
-                        self.playingState = false;
+                        self.playingState = 'pause';
                         self.updatePlayingTrack({
                             state: 'pause',
                             playState: false
                         });
                     } else {
                         self.musicEle.play();
-                        self.playingState = true;
+                        self.playingState = 'play';
                         self.updatePlayingTrack({
                             state: 'play',
                             playState: true
@@ -179,6 +174,7 @@ export default {
 }
 .track_item:hover{
     border-left: 5px solid $font-highlight-color-dark;
+    cursor: pointer;
 }
 .track_order {
     width: 5%;
@@ -206,7 +202,7 @@ export default {
 }
 .track_time {
     width: 15%;
-    color: #a1aac7;
+    color: $font-color-dark;
     @include display-center;
 }
 .track_play {
@@ -223,9 +219,10 @@ export default {
     width: 32px;
     height: 32px;
     transition: all ease 0.3s;
-    cursor: pointer;
-    background: url("assets/img/play.png") center center no-repeat;
-    background-size: contain;
+    color: $font-highlight-color-dark;
+    font-size: 30px;
+    line-height: 32px;
+    text-align: center;
 }
 .play_state_play {
     background: url("assets/img/pause.png") center center no-repeat;

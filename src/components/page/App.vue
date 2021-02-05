@@ -2,11 +2,13 @@
     <div id="app" :style="{ 'background-color': mainColor }">
         <profile id="profile"></profile>
         <toptool id="toptool"></toptool>
-        <transition name="routerview">
+        <login id='login_wrap'></login>
+        <transition name="routerview" mode="in-out">
             <keep-alive>
                 <router-view></router-view>
             </keep-alive>
         </transition>
+
         <audio ref="musicAudio" id="musicAudio"></audio>
     </div>
 </template>
@@ -16,6 +18,7 @@ import theme from "@/components/scss/theme.scss";
 import themeCSS from "@/components/theme";
 import Profile from "@/components/component/Profile";
 import Toptool from "@/components/component/Toptool";
+import Login from '@/components/component/Login';
 export default {
     data() {
         return {
@@ -26,6 +29,7 @@ export default {
     components: {
         Profile,
         Toptool,
+        Login
     },
 };
 </script>
@@ -82,10 +86,22 @@ p {
 }
 .routerview-enter,
 .routerview-leave-to {
-    transform: translateY(100%);
+    transform: translateY(-100%);
     opacity: 0;
 }
 .routerview-enter-to {
     opacity: 1;
+}
+#login_wrap{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
 }
 </style>

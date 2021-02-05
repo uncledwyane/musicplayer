@@ -8,6 +8,10 @@
             <div class="other_info" v-show="isLogin">
                 <p class="nickname">Dwyane Wade</p>
             </div>
+            <div class="login_notice" v-show="!isLogin">
+                <p>登录获取更好的体验</p>
+                <button class="show_login_btn">登录</button>
+            </div>
         </div>
         <div id="option_nav">
             <!-- 导航信息、路由 -->
@@ -162,5 +166,37 @@ p {
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
+}
+.login_notice{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+}
+.login_notice p {
+    margin-bottom: 10px;
+    color: $font-highlight-color-dark;
+}
+.show_login_btn{
+    width: 50%;
+    height: 30px;
+    border-radius: 16px;
+    outline: none;
+    box-shadow: none;
+    border: none;
+    background: #fd5833;
+    color: #fff;
+    transition: all ease .3s;
+}
+.show_login_btn:hover{
+    cursor: pointer;
+}
+.show_login_btn:active{
+    box-shadow: 0 0 10px #fd5833;
+    border:none;
+    outline: none;
+    transform: scale(0.9);
 }
 </style>
