@@ -243,9 +243,11 @@ h2{
     width: 130px;
     height: 130px;
     border-radius: 10px;
+    transition: all ease .3s;
 }
 .cover_img:hover {
     cursor: pointer;
+    box-shadow: 0 20px 20px rgba(255, 115, 0, 0.5);
 }
 .title {
     display: flex;

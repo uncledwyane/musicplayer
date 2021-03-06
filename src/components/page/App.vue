@@ -2,7 +2,7 @@
     <div id="app" :style="{ 'background-color': mainColor }">
         <profile id="profile"></profile>
         <toptool id="toptool"></toptool>
-        <login id='login_wrap'></login>
+        <login id='login_wrap' v-show="false"></login>
         <transition name="routerview" mode="in-out">
             <keep-alive>
                 <router-view></router-view>
@@ -42,6 +42,7 @@ export default {
     height: 720px;
     z-index: 0;
     overflow: hidden;
+    background: none !important;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     @include position-center;
     border-radius: 20px;

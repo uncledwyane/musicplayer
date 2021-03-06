@@ -2,8 +2,8 @@
   <div>
       <div class="login_box">
           <div class="login_category">
-              <div class="login_with_phone category_name" :class="{category_active: category == 'phone'}">手机</div>
-              <div class="login_with_email category_name" :class="{category_active: category == 'email'}">邮箱</div>
+              <div class="login_with_phone category_name" :class="{category_active: category == 'phone'}" @click="changeCategory('phone')">手机</div>
+              <div class="login_with_email category_name" :class="{category_active: category == 'email'}" @click="changeCategory('email')">邮箱</div>
           </div>
           <div class="login_phone" v-show="category == 'phone'">
               <div class="phonenumber">
@@ -37,6 +37,12 @@ export default {
     data () {
         return {
             category: 'phone'
+        }
+    },
+    methods:{
+        changeCategory(category){
+            var self = this;
+            self.category = category;
         }
     }
 }
@@ -121,11 +127,14 @@ button.excute_login_btn:active{
 .category_name{
     color: $font-highlight-color-dark;
     height: 30px;
-    border-radius: 5px;
+    box-sizing: border-box;
+}
+.category_name:hover{
+    cursor: pointer;
 }
 .category_active{
-    color: #fff;
+    color: $font-highlight-color-dark;
     // background:  $font-highlight-color-dark;
-    border: 2px dotted $font-highlight-color-dark;
+    border-bottom: 2px dotted $font-highlight-color-dark;
 }
 </style>
