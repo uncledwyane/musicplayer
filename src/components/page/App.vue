@@ -2,7 +2,9 @@
     <div id="app" :style="{ 'background-color': mainColor }">
         <profile id="profile"></profile>
         <toptool id="toptool"></toptool>
-        <login id='login_wrap' v-show="false"></login>
+        <transition name="login" mode="in-out">
+            <login id='login_wrap' v-show="isShowLogin"></login>
+        </transition>
         <transition name="routerview" mode="in-out">
             <keep-alive>
                 <router-view></router-view>
@@ -19,13 +21,21 @@ import themeCSS from "@/components/theme";
 import Profile from "@/components/component/Profile";
 import Toptool from "@/components/component/Toptool";
 import Login from '@/components/component/Login';
+import {mapState} from 'vuex';
 export default {
     data() {
         return {
             mainColor: themeCSS.light_theme,
         };
     },
-    mounted() {},
+    computed: {
+        ...mapState([
+            'isShowLogin'
+        ])
+    },
+    mounted() {
+
+    },
     components: {
         Profile,
         Toptool,
@@ -99,10 +109,23 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5);
+    background: rgba(0, 0, 0, 0.9);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 10;
+}
+
+.login-enter-active,
+.login-leave-active {
+    transition: all 0.5s ease;
+}
+.login-enter,
+.login-leave-to {
+    transform: translateY(-100%);
+    opacity: 0;
+}
+.login-enter-to {
+    opacity: 1;
 }
 </style>

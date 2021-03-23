@@ -20,6 +20,9 @@ const mutations = {
     },
     setLoginState(state, value){
         state.isLogin = value;
+    },
+    setLoginComState(state, value){
+        state.isShowLogin = value;
     }
 }
 

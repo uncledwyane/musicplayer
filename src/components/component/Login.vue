@@ -28,11 +28,14 @@
           <div class="excute_login">
               <button class="excute_login_btn">登录</button>
           </div>
+          <div class="close_btn" @click="setLoginComState(false)">
+          </div>
       </div>
   </div>
 </template>
 
 <script>
+import {mapMutations} from 'vuex';
 export default {
     data () {
         return {
@@ -40,6 +43,9 @@ export default {
         }
     },
     methods:{
+        ...mapMutations([
+            'setLoginComState'
+        ]),
         changeCategory(category){
             var self = this;
             self.category = category;
@@ -50,6 +56,7 @@ export default {
 
 <style lang='scss' scoped>
 @import '../scss/theme.scss';
+@import '../scss/mixins.scss';
 .login_box{
     width: 400px;
     height: 250px;
@@ -60,6 +67,7 @@ export default {
     border-radius: 15px;
     box-sizing: border-box;
     padding: 20px;
+    position: relative;
 }
 .login_category {
     display: flex;
@@ -136,5 +144,20 @@ button.excute_login_btn:active{
     color: $font-highlight-color-dark;
     // background:  $font-highlight-color-dark;
     border-bottom: 2px dotted $font-highlight-color-dark;
+}
+.close_btn{
+    width: 20px;
+    border-radius: 50%;
+    height: 20px;
+    position: absolute;
+    right: 5px;
+    top: 5px;
+    background: $font-highlight-color-dark;
+    transition: all ease .3s;
+}
+.close_btn:hover{
+    cursor: pointer;
+    background: url('../../../assets/close.png') center center no-repeat;
+    background-size: 20px 20px;
 }
 </style>

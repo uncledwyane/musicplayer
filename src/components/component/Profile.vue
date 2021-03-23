@@ -10,7 +10,7 @@
             </div>
             <div class="login_notice" v-show="!isLogin">
                 <p>登录获取更好的体验</p>
-                <button class="show_login_btn">登录</button>
+                <button class="show_login_btn" @click="setLoginComState(true)">登录</button>
             </div>
         </div>
         <div id="option_nav">
@@ -29,7 +29,7 @@
 </template>
 
 <script>
-import {mapState} from 'vuex'
+import {mapMutations, mapState} from 'vuex';
 
 export default {
     computed: mapState([
@@ -77,6 +77,9 @@ export default {
         self.currentOption = sessionStorage.getItem("optionName");
     },
     methods: {
+        ...mapMutations([
+            'setLoginComState'
+        ]),
         goToOption(optionName) {
             var self = this;
             sessionStorage.setItem("optionName", optionName);

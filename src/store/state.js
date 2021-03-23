@@ -14,7 +14,8 @@ var state = {
         playUrl: '',
         artists: '',
         playState: false
-    }
+    },
+    isShowLogin:false
 }
 
 export default state
