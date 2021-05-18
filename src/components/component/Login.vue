@@ -2,31 +2,31 @@
   <div>
       <div class="login_box">
           <div class="login_category">
-              <div class="login_with_phone category_name" :class="{category_active: category == 'phone'}" @click="changeCategory('phone')">手机</div>
-              <div class="login_with_email category_name" :class="{category_active: category == 'email'}" @click="changeCategory('email')">邮箱</div>
+              <div class="login_with_phone category_name" :class="{category_active: category == 'phone'}" @click="changeCategory('phone')">{{ $t( "login_phone" ) }}</div>
+              <div class="login_with_email category_name" :class="{category_active: category == 'email'}" @click="changeCategory('email')">{{ $t("login_email") }}</div>
           </div>
           <div class="login_phone" v-show="category == 'phone'">
               <div class="phonenumber">
                     <i class="fa phone_icon"></i>
-                    <input type="number" name="phonenumber" id="phone_input" class="form_data_input">
+                    <input type="number" name="phonenumber" id="phone_input" class="form_data_input" :placeholder="placeholderPhoneNum">
               </div>
               <div class="password">
                   <i class="fa password_icon"></i>
-                  <input type="password" id="phone_password_input" class="form_data_input">
+                  <input type="password" id="phone_password_input" class="form_data_input" :placeholder="placeholderPass">
               </div>
           </div>
           <div class="login_email" v-show="category == 'email'">
               <div class="email">
                     <i class="fa email_icon"></i>
-                    <input type="email" name="email" id="email_input" class="form_data_input">
+                    <input type="email" name="email" id="email_input" class="form_data_input" :placeholder="placeholderEmail">
               </div>
               <div class="password">
                   <i class="fa password_icon"></i>
-                  <input type="password" id="email_password_input" class="form_data_input">
+                  <input type="password" id="email_password_input" class="form_data_input" :placeholder="placeholderPass">
               </div>
           </div>
           <div class="excute_login">
-              <button class="excute_login_btn">登录</button>
+              <button class="excute_login_btn">{{ $t("login") }}</button>
           </div>
           <div class="close_btn" @click="setLoginComState(false)">
           </div>
@@ -39,7 +39,10 @@ import {mapMutations} from 'vuex';
 export default {
     data () {
         return {
-            category: 'phone'
+            category: 'phone',
+            placeholderPhoneNum: "请输入手机号码",
+            placeholderPass: "请输入密码",
+            placeholderEmail: "请输入邮箱"
         }
     },
     methods:{
@@ -57,6 +60,15 @@ export default {
 <style lang='scss' scoped>
 @import '../scss/theme.scss';
 @import '../scss/mixins.scss';
+/*添加css样式*/
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+}
+ 
+input[type="number"] {
+    -moz-appearance: textfield;
+}
 .login_box{
     width: 400px;
     height: 250px;

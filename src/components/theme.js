@@ -1,8 +1,21 @@
-var theme = {
-    dark_theme: '#161619',
-    light_theme: '#f9fafe',
-    default_color: '#1176ff',
-    custom_color: '#1176ff'
+var LIGHT_THEME = {
+    background: '#fff',
+    track_background: "#dee1e6",
+    highlight_color: "#fd5833",
+    song_name: "#000",
+    song_artist: "#666"
 }
 
-export default theme
+var DARK_THEME = {
+    background: "#161619",
+    track_background: "#1c1d1f",
+    highlight_color: "#fd5833",
+    song_name: "#fff",
+    song_artist: "#999"
+}
+
+export default {
+    DEFAULT: LIGHT_THEME,
+    LIGHT: LIGHT_THEME,
+    DARK: DARK_THEME
+}

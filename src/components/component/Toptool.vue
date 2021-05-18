@@ -1,10 +1,11 @@
 <template>
   <div>
       <div id="search_tool">
-          <input type="text" name="search" id="search_com" placeholder="Search for song,artists etc...">
+          <input type="text" name="search" id="search_com" placeholder="">
           <i class="fa fa-search searchicon"></i>
       </div>
       <div id="notice_and_setting">
+          <span class="language" @click="changeLanguage"><i class="fa fa-language" style="color: #9ea8c4;"></i></span>
           <span class="notice"><i class="fa fa-bell" style="color: #9ea8c4;"></i></span>
           <span class="setting"><i class="fa fa-cog" style="color: #9ea8c4;"></i></span>
       </div>
@@ -13,7 +14,21 @@
 
 <script>
 export default {
-
+    methods: {
+        changeLanguage(){
+            var self = this;
+            var currenLang = localStorage.getItem('lang');
+            if(currenLang){
+                if(currenLang == 'zh'){
+                    self.$i18n.locale = 'en';
+                }else{
+                    self.$i18n.locale = 'zh';
+                }
+                localStorage.setItem('lang', self.$i18n.locale);
+            }
+            
+        }
+    }
 }
 </script>
 
@@ -53,6 +68,6 @@ export default {
         color: #656565;
     }
     .notice{
-        margin-right: 10px;
+        margin:0 10px;
     }
 </style>

@@ -9,8 +9,8 @@
                 <p class="nickname">Dwyane Wade</p>
             </div>
             <div class="login_notice" v-show="!isLogin">
-                <p>登录获取更好的体验</p>
-                <button class="show_login_btn" @click="setLoginComState(true)">登录</button>
+                <p>{{ $t("login_notice") }}</p>
+                <button class="show_login_btn" @click="setLoginComState(true)">{{$t("login")}}</button>
             </div>
         </div>
         <div id="option_nav">
@@ -19,7 +19,7 @@
                 <span class="option_icon">
                     <i :class="option.icon" class="navIcon"></i>
                 </span>
-                <span class="option_name">{{ option.showName }}</span>
+                <span class="option_name">{{ $i18n.locale == 'zh' ? option.showName : option.optionName }}</span>
             </div>
         </div>
         <div id="my_music">
@@ -181,6 +181,7 @@ p {
 .login_notice p {
     margin-bottom: 10px;
     color: $font-highlight-color-dark;
+    text-align: center;
 }
 .show_login_btn{
     width: 50%;

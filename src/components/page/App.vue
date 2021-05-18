@@ -1,6 +1,6 @@
 <template>
-    <div id="app" :style="{ 'background-color': mainColor }">
-        <profile id="profile"></profile>
+    <div id="app">
+        <profile id="profile" :style="{backgroundColor: theme.background}"></profile>
         <toptool id="toptool"></toptool>
         <transition name="login" mode="in-out">
             <login id='login_wrap' v-show="isShowLogin"></login>
@@ -16,25 +16,49 @@
 </template>
 
 <script>
-import theme from "@/components/scss/theme.scss";
-import themeCSS from "@/components/theme";
 import Profile from "@/components/component/Profile";
 import Toptool from "@/components/component/Toptool";
 import Login from '@/components/component/Login';
-import {mapState} from 'vuex';
+import {mapState, mapMutations} from 'vuex';
+import themeConfig from '@/components/theme'
+import bus from '@/components/bus'
 export default {
     data() {
         return {
-            mainColor: themeCSS.light_theme,
+            mytheme: null
         };
     },
     computed: {
         ...mapState([
-            'isShowLogin'
+            'isShowLogin',
+            'theme'
         ])
     },
+    created(){
+        var self = this;
+        self.mytheme = themeConfig['DARK'];
+        console.log('themeConfig: ', themeConfig);
+        self.setTheme(themeConfig['DARK'])
+    },
     mounted() {
+        var self = this;
+        var currLang = localStorage.getItem('lang');
+        if(currLang){
+            self.$i18n.locale = currLang;
+        }
 
+        bus.$on('changeSong', function(songUrl){
+            self.changeSong(songUrl);
+        })
+    },
+    methods: {
+        ...mapMutations(['setTheme']),
+        changeSong(url){
+            var self = this;
+            self.$refs.musicAudio.pause();
+            self.$refs.musicAudio.src = url;
+            self.$refs.musicAudio.play();
+        }
     },
     components: {
         Profile,
@@ -53,7 +77,7 @@ export default {
     z-index: 0;
     overflow: hidden;
     background: none !important;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 20px 20px 30px rgb(0 0 0 / 56%);;
     @include position-center;
     border-radius: 20px;
     padding: 60px 0 0 12%;
@@ -66,7 +90,7 @@ export default {
         border-radius: 20px 0 0 20px;
         overflow: hidden;
         user-select: none;
-        background: $front-color-dark;
+        // background: $front-color-dark;
         position: absolute;
         left: 0;
         top: 0;
