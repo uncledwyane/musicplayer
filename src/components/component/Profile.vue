@@ -22,19 +22,19 @@
                 <span class="option_name">{{ $i18n.locale == 'zh' ? option.showName : option.optionName }}</span>
             </div>
         </div>
-        <div id="my_music">
-            <!-- 关于我、路由 -->
+        <div id="version" :style="{color: customTheme.desc_color.color}">
+            v{{version}}
         </div>
     </div>
 </template>
 
 <script>
 import {mapMutations, mapState} from 'vuex';
-
 export default {
     computed: mapState([
         'isLogin',
-        'customTheme'
+        'customTheme',
+        'version'
     ]),
     data() {
         return {
@@ -50,7 +50,7 @@ export default {
                     optionName: "MyInfo",
                     showName: '我的'
                 },
-            ],
+            ]
         };
     },
     mounted() {
@@ -183,5 +183,13 @@ p {
     border:none;
     outline: none;
     transform: scale(0.9);
+}
+#version{
+    width: 100%;
+    height: 20px;
+    text-align: center;
+    line-height: 20px;
+    position: absolute;
+    bottom: 10px;
 }
 </style>
