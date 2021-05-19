@@ -1,41 +1,41 @@
 <template>
   <div>
-      <div class="login_box">
+      <div class="login_box"  :style="{backgroundColor: customTheme.background.color}">
           <div class="login_category">
-              <div class="login_with_phone category_name" :class="{category_active: category == 'phone'}" @click="changeCategory('phone')">{{ $t( "login_phone" ) }}</div>
-              <div class="login_with_email category_name" :class="{category_active: category == 'email'}" @click="changeCategory('email')">{{ $t("login_email") }}</div>
+              <div class="login_with_phone category_name" :style="{color: customTheme.highlight.color}" :class="{category_active: category == 'phone'}" @click="changeCategory('phone')">{{ $t( "login_phone" ) }}</div>
+              <div class="login_with_email category_name" :style="{color: customTheme.highlight.color}" :class="{category_active: category == 'email'}" @click="changeCategory('email')">{{ $t("login_email") }}</div>
           </div>
           <div class="login_phone" v-show="category == 'phone'">
               <div class="phonenumber">
                     <i class="fa phone_icon"></i>
-                    <input type="number" name="phonenumber" id="phone_input" class="form_data_input" :placeholder="placeholderPhoneNum">
+                    <input type="number" :style="{color: customTheme.highlight.color, backgroundColor: customTheme.background.color}" name="phonenumber" id="phone_input" class="form_data_input" :placeholder="placeholderPhoneNum">
               </div>
               <div class="password">
                   <i class="fa password_icon"></i>
-                  <input type="password" id="phone_password_input" class="form_data_input" :placeholder="placeholderPass">
+                  <input type="password" :style="{color: customTheme.highlight.color, backgroundColor: customTheme.background.color}" id="phone_password_input" class="form_data_input" :placeholder="placeholderPass">
               </div>
           </div>
           <div class="login_email" v-show="category == 'email'">
               <div class="email">
                     <i class="fa email_icon"></i>
-                    <input type="email" name="email" id="email_input" class="form_data_input" :placeholder="placeholderEmail">
+                    <input type="email" :style="{color: customTheme.highlight.color, backgroundColor: customTheme.background.color}" name="email" id="email_input" class="form_data_input" :placeholder="placeholderEmail">
               </div>
               <div class="password">
                   <i class="fa password_icon"></i>
-                  <input type="password" id="email_password_input" class="form_data_input" :placeholder="placeholderPass">
+                  <input type="password" :style="{color: customTheme.highlight.color, backgroundColor: customTheme.background.color}" id="email_password_input" class="form_data_input" :placeholder="placeholderPass">
               </div>
           </div>
           <div class="excute_login">
-              <button class="excute_login_btn">{{ $t("login") }}</button>
+              <button class="excute_login_btn" :style="{backgroundColor: customTheme.highlight.color, color: customTheme.text_color.color}">{{ $t("login") }}</button>
           </div>
-          <div class="close_btn" @click="setLoginComState(false)">
+          <div class="close_btn" @click="setLoginComState(false)" :style="{backgroundColor: customTheme.highlight.color}">
           </div>
       </div>
   </div>
 </template>
 
 <script>
-import {mapMutations} from 'vuex';
+import {mapState,mapMutations} from 'vuex';
 export default {
     data () {
         return {
@@ -44,6 +44,9 @@ export default {
             placeholderPass: "请输入密码",
             placeholderEmail: "请输入邮箱"
         }
+    },
+    computed: {
+        ...mapState(["customTheme"])  
     },
     methods:{
         ...mapMutations([
@@ -80,6 +83,7 @@ input[type="number"] {
     box-sizing: border-box;
     padding: 20px;
     position: relative;
+    box-shadow: 0 0 20px rgba(0,0,0,.3);
 }
 .login_category {
     display: flex;
@@ -115,7 +119,7 @@ input[type="number"] {
     padding: 0 20px;
     background: $front-color-dark;
     color: $font-highlight-color-dark;
-    font-size: 20px;
+    font-size: 15px;
 }
 .excute_login{
     width: 100%;
@@ -164,7 +168,6 @@ button.excute_login_btn:active{
     position: absolute;
     right: 5px;
     top: 5px;
-    background: $font-highlight-color-dark;
     transition: all ease .3s;
 }
 .close_btn:hover{

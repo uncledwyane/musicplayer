@@ -1,7 +1,8 @@
 
 var state = {
     version: '1.0.0',
-    theme: null,
+    customTheme: null,
+    currTheme: 'DARK',
     isLogin: false,
     highQualityPlaylist: null,
     trackList: null,

@@ -1,8 +1,8 @@
 <template>
-    <div id="homepage">
+    <div id="homepage" :style="{backgroundColor: customTheme.background.color}">
         <div class="hot_playlists">
             <div class="title">
-                <h2>{{ $t("playlist_intro") }}</h2>
+                <h2 :style="{color: customTheme.highlight.color}">{{ $t("playlist_intro") }}</h2>
                 <div class="change_playlist">
                     <i class="fa fa-angle-left" @click="updatePlaylist('previous')"></i>
                     <i class="fa fa-angle-right" @click="updatePlaylist('next')"></i>
@@ -24,21 +24,21 @@
                         />
                     </div>
                     <div class="playlist_info">
-                        <p class="playlist_name">{{ playlist.name }}</p>
-                        <p class="playlist_count">{{ playlist.trackCount }}首</p>
+                        <p class="playlist_name" :style="{color: customTheme.text_color.color}">{{ playlist.name }}</p>
+                        <p class="playlist_count" :style="{color: customTheme.desc_color.color}">{{ playlist.trackCount }}首</p>
                     </div>
                 </div>
             </div>
         </div>
         <div class="play_info">
             <div class="music_in_playlist">
-                <h2 class="songsintro">{{ playingPlaylistName }}</h2>
+                <h2 class="songsintro" :style="{color: customTheme.highlight.color}">{{ playingPlaylistName }}</h2>
                 <div class="track_songs">
                     <track-list></track-list>
                 </div>
             </div>
             <div class="track_play">
-                <h2 class="songsintro">{{ $t("current_playing") }}</h2>
+                <h2 class="songsintro" :style="{color: customTheme.highlight.color}">{{ $t("current_playing") }}</h2>
                 <play></play>
             </div>
         </div>
@@ -46,13 +46,12 @@
 </template>
 
 <script>
-import API from "@/api/API";
 import { mapMutations, mapState } from "vuex";
 import TrackList from "@/components/component/TrackList";
 import Play from '@/components/component/Play'
-const myApi = new API();
+import myAPI from '@/api/myAPI'
 export default {
-    computed: mapState(["highQualityPlaylist"]),
+    computed: mapState(["highQualityPlaylist", "customTheme"]),
     data() {
         return {
             playlistShow: null, // 要显示在界面上的歌单，防止全部歌单显示浪费资源
@@ -66,7 +65,7 @@ export default {
     mounted() {
         var self = this;
         if (!self.highQualityPlaylist) {
-            myApi.getHighQualityPlaylist().then(function (res) {
+            myAPI.getHighQualityPlaylist().then(function (res) {
                 self.setHighQualityPlaylist(res.playlists);
                 self.playlistFilter(self.minIndex, self.maxIndex);
                 console.log(new Date(), " ::: 获取精品歌单成功： ", res);
@@ -167,7 +166,7 @@ export default {
             var self = this;
             self.playingPlaylistName = name;
             self.playingPlaylistId = id;
-            myApi.getPlayListDetail(id).then(function (res) {
+            myAPI.getPlayListDetail(id).then(function (res) {
                 self.setTrackList(res.playlist.tracks);
             });
         },

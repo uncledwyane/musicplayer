@@ -1,12 +1,12 @@
 <template>
-  <div id="play_wrap">
-      <div class="track_box">
-            <div class="cover" v-show="songIsPlaying.id">
-              <img :src="songIsPlaying.coverImg" class="cover_img">
+  <div id="play_wrap"  :style="{backgroundColor: customTheme.background.color}">
+      <div class="track_box"  :style="{backgroundColor: customTheme.background.color}">
+            <div class="cover">
+              <img :src="songIsPlaying.coverImg" class="cover_img"  :style="{backgroundColor: !songIsPlaying.playState ? customTheme.placehoder.color : ''}">
             </div>
-            <div class="track_info" v-show="songIsPlaying.id">
-                <p class="track_name">{{ songIsPlaying.name }}</p>
-                <p class="track_artists">{{ songIsPlaying.artists }}</p>
+            <div class="track_info">
+                <p class="track_name" :style="{backgroundColor: !songIsPlaying.name ? customTheme.placehoder.color : ''}">{{ songIsPlaying.name }}</p>
+                <p class="track_artists" :style="{backgroundColor: !songIsPlaying.name ? customTheme.placehoder.color : ''}">{{ songIsPlaying.artists }}</p>
             </div>
             <div class="track_time"></div>
             <div class="track_durtime"></div>
@@ -37,7 +37,8 @@ export default {
     },
     computed: ({
         ...mapState([
-            'songIsPlaying'
+            'songIsPlaying',
+            'customTheme'
         ])
     }),
     mounted () {
@@ -51,12 +52,14 @@ export default {
             if(self.songIsPlaying.id){
                 if(value == 'pause'){
                     self.updatePlayingTrack({
-                        state: 'pause'
+                        state: 'pause',
+                        playState: false
                     })
                     bus.$emit('changePlayState', 'pause');
                 }else{
                     self.updatePlayingTrack({
-                        state: 'play'
+                        state: 'play',
+                        playState: true
                     })
                     bus.$emit('changePlayState', 'play');
                 }
@@ -92,7 +95,6 @@ export default {
         padding: 10px;
         box-sizing: border-box;
         background: $front-color-dark;
-        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
         position: relative;
         top: 20px;
         border-radius: 20px;
@@ -100,12 +102,14 @@ export default {
     .cover{
         width: 100%;
         display: flex;
+        height: 70%;
         align-items: center;
         justify-content: center;
         padding: 10px 0;
         margin-bottom: 10px;
     }
     .track_info{
+        height: 30%;
         width: 100%;
         justify-content: center;
         /* display: flex; */
@@ -113,10 +117,15 @@ export default {
     }
     .track_name{
         color: $font-highlight-color-dark;
+        width: 100%;
+        height: 20px;
     }
     .track_artists{
         color:$font-color-dark;
         font-size: 12px;
+        width: 50%;
+        height: 20px;
+        margin: 5px auto;
     }
     .control_box{
         width: 80%;
@@ -132,7 +141,7 @@ export default {
     }
     .cover_img{
         width: 70%;
-        height: 70%;
+        min-height: 100%;
         border-radius: 50%;
         box-shadow: 0 20px 30px rgba(0,0,0,.3);
     }

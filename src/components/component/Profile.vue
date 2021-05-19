@@ -9,8 +9,8 @@
                 <p class="nickname">Dwyane Wade</p>
             </div>
             <div class="login_notice" v-show="!isLogin">
-                <p>{{ $t("login_notice") }}</p>
-                <button class="show_login_btn" @click="setLoginComState(true)">{{$t("login")}}</button>
+                <p :style="{color: customTheme.highlight.color}">{{ $t("login_notice") }}</p>
+                <button class="show_login_btn" @click="setLoginComState(true)"  :style="{backgroundColor: customTheme.highlight.color}">{{$t("login")}}</button>
             </div>
         </div>
         <div id="option_nav">
@@ -33,7 +33,8 @@ import {mapMutations, mapState} from 'vuex';
 
 export default {
     computed: mapState([
-        'isLogin'
+        'isLogin',
+        'customTheme'
     ]),
     data() {
         return {
@@ -45,29 +46,9 @@ export default {
                     showName: '首页'
                 },
                 {
-                    icon: "fa fa-folder",
-                    optionName: "Album",
-                    showName: '专辑'
-                },
-                {
-                    icon: "fa fa-compass",
-                    optionName: "Browse",
-                    showName: '浏览'
-                },
-                {
-                    icon: "fa fa-user",
-                    optionName: "Artists",
-                    showName: '歌手'
-                },
-                {
-                    icon: "fa fa-video-camera",
-                    optionName: "Videos",
-                    showName: '视频'
-                },
-                {
                     icon: "fa fa-user-circle",
                     optionName: "MyInfo",
-                    showName: '关于'
+                    showName: '我的'
                 },
             ],
         };

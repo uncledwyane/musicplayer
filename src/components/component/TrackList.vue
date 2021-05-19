@@ -1,20 +1,20 @@
 <template>
     <div id="track_list">
-        <div class="track_item" v-for="(track, index) in tracks" :key="track.id" :class="{track_isplaying: track.id == songIsPlaying.id && playingState}" @click="playOrPause('play', track)">
+        <div class="track_item" v-for="(track, index) in tracks" :key="track.id" :class="{track_isplaying: track.id == songIsPlaying.id && playingState}" @click="playOrPause('play', track)" :style="{backgroundColor: customTheme.list_bg.color}">
             <div class="track_order">
-                <span class="order_num">{{ index + 1 }}</span>
+                <span class="order_num"  :style="{color: customTheme.text_color.color}">{{ index + 1 }}</span>
             </div>
             <div class="track_cover">
                 <img class="trackcover_img" :src="track.al.picUrl" />
             </div>
             <div class="track_name">
-                <span class="song_name">{{ track.al.name }}</span>
+                <span class="song_name" :style="{color: customTheme.text_color.color}">{{ track.al.name }}</span>
             </div>
             <div class="track_artists">
-                <span class="artists">{{ track.ar | trackArtistsFilter(track.ar) }}</span>
+                <span class="artists" :style="{color: customTheme.artist.color}">{{ track.ar | trackArtistsFilter(track.ar) }}</span>
             </div>
             <div class="track_time">
-                <span class="song_time">{{ track.dt | trackTimeFilter(track.dt) }}</span>
+                <span class="song_time" :style="{color: customTheme.desc_color.color}">{{ track.dt | trackTimeFilter(track.dt) }}</span>
             </div>
             <div class="track_play" v-show="track.id == songIsPlaying.id">
                 <span class="play_state">
@@ -28,9 +28,8 @@
 
 <script>
 import { mapState, mapMutations, mapActions } from "vuex"
-import API from '@/api/API'
+import myAPI from '@/api/myAPI'
 import bus from '@/components/bus'
-const api = new API()
 export default {
     data() {
         return {
@@ -42,6 +41,7 @@ export default {
         ...mapState({
             tracks: "trackList",
             songIsPlaying: "songIsPlaying",
+            customTheme: "customTheme"
         }),
     },
     mounted() {
@@ -58,9 +58,13 @@ export default {
             }else{
                 self.musicEle.play();
                 self.updatePlayingTrack({
-                    playState: false
+                    playState: true
                 })
             }
+        })
+
+        bus.$on('playSearchSong', function(track){
+            self.playOrPause('play', track);
         })
     },
     filters: {
@@ -94,6 +98,7 @@ export default {
     methods: {
         ...mapMutations(["setPlayingTrack", "updatePlayingTrack"]),
         playOrPause(state, track) {
+            console.log(`暂停或者播放：`, track);
             console.log(`暂停或者播放： 把 ${track.name}切换为 ${state}`);
             var self = this;
             var tempObj = {
@@ -106,15 +111,13 @@ export default {
                 artists: self.formatTrackArtists(track.ar)
             };
             if (self.songIsPlaying.id && self.songIsPlaying.id != track.id || !self.songIsPlaying.id) {
-                api.getSongUrl(track.id).then(function (res) {
+                myAPI.getSongUrl(track.id).then(function (res) {
                     tempObj.state = "play";
                     tempObj.playUrl = res.data[0].url;
+                    tempObj.playState = true;
                     self.musicEle.src = tempObj.playUrl;
                     self.musicEle.play();
                     self.playingState = 'play';
-                    self.updatePlayingTrack({
-                        playState: true
-                    })
                     self.setPlayingTrack(tempObj);
                 })
             } else {
@@ -165,7 +168,6 @@ export default {
     width: 98%;
     height: 50px;
     display: flex;
-    background: $front-color-dark;
     align-items: center;
     margin-bottom: 10px;
     font-size: 12px;

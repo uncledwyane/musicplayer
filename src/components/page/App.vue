@@ -1,9 +1,9 @@
 <template>
     <div id="app">
-        <profile id="profile" :style="{backgroundColor: theme.background}"></profile>
-        <toptool id="toptool"></toptool>
+        <profile id="profile" :style="{backgroundColor: customTheme.background.color}"></profile>
+        <toptool id="toptool" :style="{backgroundColor: customTheme.background.color}"></toptool>
         <transition name="login" mode="in-out">
-            <login id='login_wrap' v-show="isShowLogin"></login>
+            <login id='login_wrap' v-show="isShowLogin" :style="{backgroundColor: customTheme.background.color}"></login>
         </transition>
         <transition name="routerview" mode="in-out">
             <keep-alive>
@@ -31,14 +31,14 @@ export default {
     computed: {
         ...mapState([
             'isShowLogin',
-            'theme'
+            'customTheme'
         ])
     },
     created(){
         var self = this;
-        self.mytheme = themeConfig['DARK'];
+        self.mytheme = JSON.parse(localStorage.getItem('customTheme')) || themeConfig['CUSTOM'];
         console.log('themeConfig: ', themeConfig);
-        self.setTheme(themeConfig['DARK'])
+        self.setTheme(self.mytheme)
     },
     mounted() {
         var self = this;
@@ -46,18 +46,26 @@ export default {
         if(currLang){
             self.$i18n.locale = currLang;
         }
-
+        self.$refs.musicAudio.onended = function(e){
+            self.stopPlay();
+        }
         bus.$on('changeSong', function(songUrl){
             self.changeSong(songUrl);
         })
     },
     methods: {
-        ...mapMutations(['setTheme']),
+        ...mapMutations(['setTheme', 'updatePlayingTrack']),
         changeSong(url){
             var self = this;
             self.$refs.musicAudio.pause();
             self.$refs.musicAudio.src = url;
             self.$refs.musicAudio.play();
+        },
+        stopPlay(){
+            var self = this;
+            self.updatePlayingTrack({
+                playState: false
+            })
         }
     },
     components: {
@@ -81,6 +89,7 @@ export default {
     @include position-center;
     border-radius: 20px;
     padding: 60px 0 0 12%;
+    user-select: none;
     #profile {
         width: 12%;
         height: 100%;

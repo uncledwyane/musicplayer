@@ -9,7 +9,7 @@ import Myinfo from '@/components/page/Myinfo'
 export default new VueRouter({
     // mode: 'history',
     routes: [
-        {path: '/', name: '/'},
+        {path: '/', name: '/', redirect: '/home'},
         {path: '/home', name: 'home', component: Homepage},
         {path: '/album', name: 'album', component: Album},
         {path: '/browse', name: 'browse', component: Browse},
