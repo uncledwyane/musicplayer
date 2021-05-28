@@ -1,14 +1,14 @@
 <template>
     <div id="track_list">
-        <div class="track_item" v-for="(track, index) in tracks" :key="track.id" :class="{track_isplaying: track.id == songIsPlaying.id && playingState}" @click="playOrPause('play', track)" :style="{backgroundColor: customTheme.list_bg.color}">
+        <div class="track_item" v-for="(track, index) in tracks" :key="track.id" @click="playOrPause('play', track)" :style="{backgroundColor: customTheme.list_bg.color, 'border-left': track.id == songIsPlaying.id && playingState ? `5px solid ${customTheme.highlight.color}` : ''}">
             <div class="track_order">
                 <span class="order_num"  :style="{color: customTheme.text_color.color}">{{ index + 1 }}</span>
             </div>
             <div class="track_cover">
-                <img class="trackcover_img" :src="track.al.picUrl" />
+                <img class="trackcover_img" :src="track.al.picUrl"/>
             </div>
             <div class="track_name">
-                <span class="song_name" :style="{color: customTheme.text_color.color}">{{ track.al.name }}</span>
+                <span class="song_name" :style="{color: customTheme.text_color.color}">{{ track.name }}</span>
             </div>
             <div class="track_artists">
                 <span class="artists" :style="{color: customTheme.artist.color}">{{ track.ar | trackArtistsFilter(track.ar) }}</span>
@@ -18,8 +18,8 @@
             </div>
             <div class="track_play" v-show="track.id == songIsPlaying.id">
                 <span class="play_state">
-                    <i class="fa fa-pause-circle" v-show="playingState == 'play' && track.id == songIsPlaying.id"></i>
-                    <i class="fa fa-play-circle" v-show="playingState == 'pause' && track.id == songIsPlaying.id"></i>
+                    <i class="fa fa-pause-circle" v-show="playingState == 'play' && track.id == songIsPlaying.id" :style="{color: customTheme.highlight.color}"></i>
+                    <i class="fa fa-play-circle" v-show="playingState == 'pause' && track.id == songIsPlaying.id" :style="{color: customTheme.highlight.color}"></i>
                 </span>
             </div>
         </div>
@@ -175,7 +175,6 @@ export default {
     border-radius: 6px;
 }
 .track_item:hover{
-    border-left: 5px solid $font-highlight-color-dark;
     cursor: pointer;
 }
 .track_order {

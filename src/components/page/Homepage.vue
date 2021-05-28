@@ -4,8 +4,8 @@
             <div class="title">
                 <h2 :style="{color: customTheme.highlight.color}">{{ $t("playlist_intro") }}</h2>
                 <div class="change_playlist">
-                    <i class="fa fa-angle-left" @click="updatePlaylist('previous')"></i>
-                    <i class="fa fa-angle-right" @click="updatePlaylist('next')"></i>
+                    <i class="fa fa-angle-left " @click="updatePlaylist('previous')" @mouseover="setColorToHighLight" @mouseout="recoveryColor"></i>
+                    <i class="fa fa-angle-right " @click="updatePlaylist('next')" @mouseover="setColorToHighLight" @mouseout="recoveryColor"></i>
                 </div>
             </div>
             <div class="playlist">
@@ -15,12 +15,16 @@
                     :key="playlist.id"
                 >
                     <div class="playlist_cover">
+                        <!-- <div class="playingLyer" v-show="playlist.id == playingPlaylistId"></div> -->
                         <img
                             :src="playlist.coverImgUrl"
                             :alt="playlist.id"
                             class="cover_img"
+                            id="cover_img"
+                            ref="coverImg"
+                            @mouseover="showBoxShadow"
                             @click="getTrackListById(playlist.id, playlist.name)"
-                            :class="{playlist_playing: playlist.id === playingPlaylistId}"
+                            :style="{'box-shadow': playlist.id == playingPlaylistId ? `0 20px 20px ${customTheme.highlight.color}`: ''}"
                         />
                     </div>
                     <div class="playlist_info">
@@ -78,8 +82,21 @@ export default {
         Play
     },
     methods: {
-        ...mapMutations(["setHighQualityPlaylist", "setTrackList"]),
+        ...mapMutations(["setHighQualityPlaylist", "setTrackList", "setTrackListIds"]),
+        showBoxShadow(e){
+            var self = this;
+            var bgColor = self.customTheme.highlight.color.colorRgba(.5);
+            e.target.style.boxShadow = `0 20px 20px ${bgColor}`
 
+        },
+        setColorToHighLight(e){
+            var self = this;
+            e.target.style.color = self.customTheme.highlight.color;
+        },
+        recoveryColor(e){
+            var self = this;
+            e.target.style.color = self.customTheme.desc_color.color;
+        },
         playlistFilter(min, max) {
             var self = this;
             var tempArray = new Array();
@@ -168,6 +185,11 @@ export default {
             self.playingPlaylistId = id;
             myAPI.getPlayListDetail(id).then(function (res) {
                 self.setTrackList(res.playlist.tracks);
+                var tempArray = [];
+                res.playlist.tracks.forEach(function(track){
+                    tempArray.push(track.id);
+                })
+                self.setTrackListIds(tempArray);
             });
         },
     },
@@ -183,9 +205,6 @@ p {
     padding: 0;
     font-weight: 200;
 }
-h2{
-    color: $font-highlight-color-dark;
-}
 
 #homepage {
     display: flex;
@@ -193,7 +212,6 @@ h2{
     height: calc(100% - 60px);
     position: absolute;
     flex-direction: column;
-    background: $background-color-dark;
     z-index: 0;
     left: 12%;
 }
@@ -215,14 +233,25 @@ h2{
 .playlist_cover {
     width: 130px;
     height: 130px;
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
     @include display-center;
 }
 .playlist_count {
-    color:$font-color-dark;
     font-size: 12px;
 }
 .playlist_cover:hover {
     cursor: pointer;
+}
+.playingLyer{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255,255,255,.5);
+    backdrop-filter: blur(10px);
 }
 .playlist_info {
     position: relative;
@@ -246,7 +275,6 @@ h2{
 }
 .cover_img:hover {
     cursor: pointer;
-    box-shadow: 0 20px 20px rgba(255, 115, 0, 0.5);
 }
 .title {
     display: flex;
@@ -258,14 +286,18 @@ h2{
 .change_playlist {
     position: absolute;
     right: 50px;
+    width: auto;
+    display: flex;
 }
 .fa {
     font-size: 25px;
-    color: #a1aac7;
+    display: block;
+    width: 25px;
+    text-align: center;
+    height: 25px;
     transition: all ease 0.3s;
 }
 .fa:hover {
-    color: #254cda;
     cursor: pointer;
 }
 .fa-angle-left {
@@ -315,8 +347,5 @@ h2{
     width: 40%;
     /* background: lightblue; */
     padding: 0 20px 10px 20px;
-}
-.playlist_playing{
-    box-shadow: 0 20px 20px rgba(255, 115, 0, 0.5);
 }
 </style>

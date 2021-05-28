@@ -5,7 +5,7 @@
               <img :src="songIsPlaying.coverImg" class="cover_img"  :style="{backgroundColor: !songIsPlaying.playState ? customTheme.placehoder.color : ''}">
             </div>
             <div class="track_info">
-                <p class="track_name" :style="{backgroundColor: !songIsPlaying.name ? customTheme.placehoder.color : ''}">{{ songIsPlaying.name }}</p>
+                <p class="track_name" :style="{backgroundColor: !songIsPlaying.name ? customTheme.placehoder.color : '', color: customTheme.highlight.color}">{{ songIsPlaying.name }}</p>
                 <p class="track_artists" :style="{backgroundColor: !songIsPlaying.name ? customTheme.placehoder.color : ''}">{{ songIsPlaying.artists }}</p>
             </div>
             <div class="track_time"></div>
@@ -13,14 +13,14 @@
       </div>
       <div class="control_box">
           <div class="previous_track">
-              <i class="fa fa-angle-double-left"></i>
+              <i class="fa fa-angle-double-left" @click="previousTrack" :style="{color: customTheme.highlight.color}"></i>
           </div>
           <div class="pause_or_play">
-              <i class="fa fa-play" v-show="songIsPlaying.state == 'pause'" @click="playOrPause('play')"></i>
-              <i class="fa fa-pause" v-show="songIsPlaying.state == 'play'" @click="playOrPause('pause')"></i>
+              <i class="fa fa-play" v-show="songIsPlaying.state == 'pause'" @click="playOrPause('play')" :style="{color: customTheme.highlight.color}"></i>
+              <i class="fa fa-pause" v-show="songIsPlaying.state == 'play'" @click="playOrPause('pause')" :style="{color: customTheme.highlight.color}"></i>
           </div>
           <div class="next_track">
-              <i class="fa fa-angle-double-right"></i>
+              <i class="fa fa-angle-double-right" @click="nextTrack" :style="{color: customTheme.highlight.color}"></i>
           </div>
       </div>
   </div>
@@ -32,18 +32,24 @@ import bus from '@/components/bus'
 export default {
     data () {
         return {
-            musicEle: null
+            musicEle: null,
+            currentTrackList: null
         }
     },
     computed: ({
         ...mapState([
             'songIsPlaying',
-            'customTheme'
+            'customTheme',
+            'trackListIds',
+            'trackList'
         ])
     }),
     mounted () {
         var self = this;
         self.musicEle = document.getElementById('musicAudio');
+        bus.$on('nextSong', function(){
+            self.nextTrack()
+        })
     },
     methods: {
         ...mapMutations(['updatePlayingTrack']),
@@ -63,6 +69,52 @@ export default {
                     })
                     bus.$emit('changePlayState', 'play');
                 }
+            }
+        },
+        previousTrack(){
+            var self = this;
+            var previousIndex;
+            if(self.songIsPlaying.name){
+                console.log(':::切换上一曲，当前播放歌曲id：', self.songIsPlaying.id);
+                console.log(':::切换上一曲，当前播放列表ids：', self.trackListIds);
+                var currPlaySongId = self.songIsPlaying.id;
+                var currSongIdIndex = self.trackListIds.indexOf(currPlaySongId);
+                if(currSongIdIndex > 0){
+                    previousIndex = currSongIdIndex - 1;
+                }else{
+                    previousIndex = self.trackListIds.length - 1;
+                }
+                console.log(':::切换上一曲，获取到前面的歌曲index：', previousIndex);
+                console.log(':::切换上一曲，获取到上一播放歌曲id：', self.trackListIds[previousIndex]);
+                self.trackList.forEach(function(track){
+                    if(track.id == self.trackListIds[previousIndex]){
+                        bus.$emit('playSearchSong', track);
+                    }
+                })
+            }
+        },
+        nextTrack(){
+            var self = this;
+            var nextIndex;
+            if(self.songIsPlaying.name){
+                console.log(':::切换下一曲，当前播放歌曲id：', self.songIsPlaying.id);
+                console.log(':::切换下一曲，当前播放列表ids：', self.trackListIds);
+                var currPlaySongId = self.songIsPlaying.id;
+                var currSongIdIndex = self.trackListIds.indexOf(currPlaySongId);
+                if(currSongIdIndex >= 0){
+                    if(currSongIdIndex == self.trackListIds.length - 1){
+                        nextIndex = 0;
+                    }else{
+                        nextIndex = currSongIdIndex + 1;
+                    }
+                }
+                console.log(':::切换下一曲，获取到前面的歌曲index：', nextIndex);
+                console.log(':::切换下一曲，获取到下一播放歌曲id：', self.trackListIds[nextIndex]);
+                self.trackList.forEach(function(track){
+                    if(track.id == self.trackListIds[nextIndex]){
+                        bus.$emit('playSearchSong', track);
+                    }
+                })
             }
         }
     }
@@ -143,7 +195,7 @@ export default {
         width: 70%;
         min-height: 100%;
         border-radius: 50%;
-        box-shadow: 0 20px 30px rgba(0,0,0,.3);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
     .previous_track, .pause_or_play, .next_track{
         width: calc(100% / 3);
@@ -165,6 +217,5 @@ export default {
     }
     .pause_or_play:hover, .previous_track:hover, .next_track:hover{
         cursor: pointer;
-        color: $font-color-dark;
     }
 </style>

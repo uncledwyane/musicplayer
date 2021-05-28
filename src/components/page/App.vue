@@ -2,16 +2,14 @@
     <div id="app">
         <profile id="profile" :style="{backgroundColor: customTheme.background.color}"></profile>
         <toptool id="toptool" :style="{backgroundColor: customTheme.background.color}"></toptool>
-        <transition name="login" mode="in-out">
-            <login id='login_wrap' v-show="isShowLogin" :style="{backgroundColor: customTheme.background.color}"></login>
-        </transition>
+        <login id='login_wrap' ref="login" v-show="isShowLogin" :style="{backgroundColor: bgColor}"></login>
         <transition name="routerview" mode="in-out">
             <keep-alive>
                 <router-view></router-view>
             </keep-alive>
         </transition>
 
-        <audio ref="musicAudio" id="musicAudio"></audio>
+        <audio ref="musicAudio" id="musicAudio" @ended='playEnd' ></audio>
     </div>
 </template>
 
@@ -31,8 +29,14 @@ export default {
     computed: {
         ...mapState([
             'isShowLogin',
-            'customTheme'
-        ])
+            'customTheme',
+            'trackList'
+        ]),
+        bgColor: function(){
+            var self = this;
+            var bgColor = self.customTheme.background.color.colorRgba(.3);
+            return bgColor;
+        }
     },
     created(){
         var self = this;
@@ -52,9 +56,32 @@ export default {
         bus.$on('changeSong', function(songUrl){
             self.changeSong(songUrl);
         })
+
+        bus.$on('showOrHideLogin', function(){
+            self.showOrHideLogin();
+        })
     },
     methods: {
         ...mapMutations(['setTheme', 'updatePlayingTrack']),
+        showOrHideLogin(){
+            var self = this;
+            var loginCom = document.getElementById('login_wrap');
+            if(self.isShowLogin){
+                loginCom.style.transform = 'translateY(100%)';
+            }else{
+                loginCom.style.transform = 'translateY(0)';
+            }
+        },
+        playEnd(){
+            var self = this;
+            self.updatePlayingTrack({
+                state: 'pause',
+                playState: false
+            })
+            // 播放结束，切到另一首歌
+            // TODO 后续根据播放模式（随机/单曲循环/列表循环）控制下一曲
+            bus.$emit('nextSong');
+        },
         changeSong(url){
             var self = this;
             self.$refs.musicAudio.pause();
@@ -138,7 +165,7 @@ p {
 }
 #login_wrap{
     position: absolute;
-    top: 0;
+    top: -100%;
     left: 0;
     width: 100%;
     height: 100%;
@@ -147,18 +174,18 @@ p {
     align-items: center;
     justify-content: center;
     z-index: 10;
+    backdrop-filter: blur(10px);
+    transition: all linear .5s;
 }
 
 .login-enter-active,
 .login-leave-active {
     transition: all 0.5s ease;
 }
-.login-enter,
-.login-leave-to {
+.login-enter{
     transform: translateY(-100%);
-    opacity: 0;
 }
 .login-enter-to {
-    opacity: 1;
+    transform: translateY(0%);
 }
 </style>

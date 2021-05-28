@@ -6,7 +6,8 @@ import Artists from '@/components/page/Artists'
 import Videos from '@/components/page/Videos'
 import Myinfo from '@/components/page/Myinfo'
 
-export default new VueRouter({
+import state from '@/store/state'
+const router = new VueRouter({
     // mode: 'history',
     routes: [
         {path: '/', name: '/', redirect: '/home'},
@@ -18,3 +19,10 @@ export default new VueRouter({
         {path: '/myinfo', name: 'myinfo', component: Myinfo}
     ]
 })
+
+router.beforeEach((to, from, next) => {
+    next()
+})
+
+export default router
+

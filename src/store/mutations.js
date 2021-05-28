@@ -7,11 +7,17 @@ const mutations = {
     setCurrTheme(state, theme){
         state.currTheme = theme;
     },
+    updateLocalStorageTheme(state, theme){
+        localStorage.setItem('customTheme', JSON.stringify(theme))
+    },
     setHighQualityPlaylist(state, playlist){
         state.highQualityPlaylist = playlist;  
     },
     setTrackList(state, list){
         state.trackList = list;
+    },
+    setTrackListIds(state, list){
+        state.trackListIds = list;
     },
     setPlayingTrack(state, track){
         state.songIsPlaying = track;

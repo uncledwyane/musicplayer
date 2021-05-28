@@ -1,13 +1,13 @@
 <template>
   <div>
       <div id="search_tool">
-          <input type="text" name="search" id="search_com" placeholder="" v-model="keyword">
-          <i class="fa fa-search searchicon" @click="searchSong"></i>
+          <input type="text" name="search" id="search_com" placeholder="" v-model="keyword" :style="{color: theme.highlight.color, backgroundColor: theme.search_bar_bg.color}">
+          <i class="fa fa-search searchicon" @click="searchSong" :style="{color: theme.highlight.color}"></i>
       </div>
       <div id="notice_and_setting">
-          <span class="language" @click="changeLanguage"><i class="fa fa-language" style="color: #9ea8c4;"></i></span>
-          <span class="notice"><i class="fa fa-bell" style="color: #9ea8c4;"></i></span>
-          <span class="setting" @click="isShowTheme? isShowTheme = false : isShowTheme = true"><i class="fa fa-cog" style="color: #9ea8c4;"></i></span>
+          <span class="language" @click="changeLanguage"><i class="fa fa-language" style="color: #9ea8c4;"  :style="{color: theme.highlight.color}"></i></span>
+          <span class="notice"><i class="fa fa-bell" style="color: #9ea8c4;"  :style="{color: theme.highlight.color}"></i></span>
+          <span class="setting" @click="isShowTheme? isShowTheme = false : isShowTheme = true"><i class="fa fa-cog" style="color: #9ea8c4;" :style="{color: theme.highlight.color}"></i></span>
       </div>
       <div class="search_result" :style="{transform: songs? 'scaleY(1)' : 'scaleY(0)', backgroundColor: theme.background.color}" >
           <div class="song_item" v-for="song in songs" :key="song.id" @click="playIt(song)" :style="{backgroundColor: theme.list_bg.color, color: theme.text_color.color}">
@@ -20,16 +20,23 @@
           </div>
       </div>
       <div class="theme_switch" :style="{transform: isShowTheme? 'scale(1)' : 'scale(0)', backgroundColor: theme.background.color}">
-          <div class="themes">
+          <div class="theme_change">
+              <div class="default_theme theme_light" @click="changeThemeTo('LIGHT')" :style="{color: theme.text_color.color, backgroundColor: currTheme == 'LIGHT'? theme.highlight.color : ''}">Light <i class="fa fa-sun-o" style="position: absolute; right: 5px;font-size: 20px;top: 10px;"></i></div>
+              <div class="default_theme theme_dark" @click="changeThemeTo('DARK')" :style="{color: theme.text_color.color, backgroundColor: currTheme == 'DARK'? theme.highlight.color : ''}">Dark <i class="fa fa-moon-o" style="position: absolute; right: 5px;font-size: 20px;top: 10px;"></i></div>
+              <div class="default_theme theme_custom" @click="setThemeConfigState" :style="{color: theme.text_color.color, backgroundColor: currTheme == 'CUSTOM'? theme.highlight.color : ''}">Custom <i class="fa fa-gears" style="position: absolute; right: 5px;font-size: 20px;top: 10px;"></i></div>
+          </div>
+          <div class="custom_config" v-show="isShowThemeConfig">
+              <div class="themes">
               <div class="color_item"  v-for="(color, index) in theme" :key="index"  :style="{backgroundColor: theme.list_bg.color}">
                   <div class="color_desc" :style="{color: theme.text_color.color}">{{ color.desc }}</div>
                   <div class="color_choose">
                     <input type="color" name="" id="chooseTheme" @change="colorChange" :data-name="color.key" v-model="color.color">
                   </div>
-              </div>
-          </div>
-          <div class="save_btn">
-              <span class="saveIt" @click="saveColorConfig" :style="{backgroundColor: theme.highlight.color, color: theme.text_color.color}">保存</span>
+                    </div>
+                </div>
+                <div class="save_btn">
+                    <span class="saveIt" @click="saveColorConfig" :style="{backgroundColor: theme.highlight.color, color: theme.text_color.color}">保存</span>
+                </div>
           </div>
       </div>
   </div>
@@ -62,7 +69,8 @@ export default {
             limit: 10,
             songs: null,
             theme: null,
-            isShowTheme: false
+            isShowTheme: false,
+            isShowThemeConfig: false
         }
     },
     computed: {
@@ -82,10 +90,10 @@ export default {
     },
     created(){
         var self = this;
-        self.theme = JSON.parse(localStorage.getItem('customTheme')) || theme['CUSTOM']
+        self.theme = JSON.parse(localStorage.getItem('customTheme')) || theme['LIGHT']
     },
     methods: {
-        ...mapMutations(['setCurrTheme', 'setTheme']),
+        ...mapMutations(['setCurrTheme', 'setTheme', 'updateLocalStorageTheme']),
         playIt(song){
             var self = this;
             myAPI.getSongDetail(song.id).then(function(res){
@@ -105,6 +113,19 @@ export default {
                 }).catch(function(err){
                     console.log(':::搜索关键词出错，错误：', err);
                 })
+            }
+        },
+        setThemeConfigState(){
+            var self = this;
+            var themeSwitchEle = document.getElementsByClassName('custom_config')[0];
+            self.setTheme(theme['CUSTOM'])
+            self.setCurrTheme('CUSTOM')
+            if(self.isShowThemeConfig){
+                self.isShowThemeConfig = false;
+                themeSwitchEle.style.height = '0';
+            }else{
+                self.isShowThemeConfig = true;
+                themeSwitchEle.style.height = '500px'
             }
         },
         colorChange(e){
@@ -129,6 +150,15 @@ export default {
                 localStorage.setItem('lang', self.$i18n.locale);
             }
             
+        },
+        changeThemeTo(themeName){
+            var self = this;
+            // 隐藏自定义颜色
+            self.isShowThemeConfig = false;
+            self.setCurrTheme(themeName)
+            self.theme = theme[themeName]
+            self.setTheme(theme[themeName]);
+            self.updateLocalStorageTheme(theme[themeName])
         }
     }
 }
@@ -146,15 +176,12 @@ export default {
     }
     .fa:hover{
         cursor: pointer;
-        color: $font-highlight-color-dark !important;
     }
     #search_com{
         width: 400px;
         border: 2px solid rgba(117, 117, 117, 0.1);;
         border-radius: 20px;
         padding: 5px 10px;
-        background: rgb(117 117 117 / 10%);
-        color: $font-highlight-color-dark;
         margin-left: 30px;
         height: 25px;
     }
@@ -225,7 +252,7 @@ export default {
         text-align: right;
     }
     .theme_switch{
-        width: 240px;
+        width: 250px;
         display: flex;
         flex-direction: column;
         box-sizing: border-box;
@@ -239,7 +266,13 @@ export default {
         border-bottom-right-radius: 10px;
         transition: all ease .3s;
         transform-origin: right top;
-        box-shadow: 0 10px 20px rgba(0,0,0,.2);
+        box-shadow: 0 20px 20px rgba(0,0,0,.2);
+    }
+    .custom_config{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        transition: all linear .5s;
     }
     #chooseTheme{
         width: 30px;
@@ -312,5 +345,22 @@ export default {
         height: 30px;
         border: 0;
         border-radius: 50%;
+    }
+    .default_theme{
+        width: 100%;
+        text-align: left;
+        height: 40px;
+        line-height: 40px;
+        border-radius: 5px;
+        box-sizing: border-box;
+        padding: 0 5px;
+        margin-bottom: 10px;
+        position: relative;
+    }
+    .default_theme:hover{
+        cursor: pointer;
+    }
+    .theme_change{
+        width: 100%;
     }
 </style>

@@ -8,11 +8,11 @@
           <div class="login_phone" v-show="category == 'phone'">
               <div class="phonenumber">
                     <i class="fa phone_icon"></i>
-                    <input type="number" :style="{color: customTheme.highlight.color, backgroundColor: customTheme.background.color}" name="phonenumber" id="phone_input" class="form_data_input" :placeholder="placeholderPhoneNum">
+                    <input type="number" v-model="cellphone" :style="{color: customTheme.highlight.color, backgroundColor: customTheme.background.color}" name="phonenumber" id="phone_input" class="form_data_input" :placeholder="placeholderPhoneNum">
               </div>
               <div class="password">
                   <i class="fa password_icon"></i>
-                  <input type="password" :style="{color: customTheme.highlight.color, backgroundColor: customTheme.background.color}" id="phone_password_input" class="form_data_input" :placeholder="placeholderPass">
+                  <input type="password" v-model="password" :style="{color: customTheme.highlight.color, backgroundColor: customTheme.background.color}" id="phone_password_input" class="form_data_input" :placeholder="placeholderPass">
               </div>
           </div>
           <div class="login_email" v-show="category == 'email'">
@@ -26,23 +26,27 @@
               </div>
           </div>
           <div class="excute_login">
-              <button class="excute_login_btn" :style="{backgroundColor: customTheme.highlight.color, color: customTheme.text_color.color}">{{ $t("login") }}</button>
+              <button class="excute_login_btn" @click="excuteLogin" :style="{backgroundColor: customTheme.highlight.color, color: customTheme.text_color.color}">{{ $t("login") }}</button>
           </div>
-          <div class="close_btn" @click="setLoginComState(false)" :style="{backgroundColor: customTheme.highlight.color}">
+          <div class="close_btn" @click="hideLogin" :style="{backgroundColor: customTheme.highlight.color}">
           </div>
       </div>
   </div>
 </template>
 
 <script>
-import {mapState,mapMutations} from 'vuex';
+import {mapState,mapMutations} from 'vuex'
+import bus from '@/components/bus'
+import myAPI from '@/api/myAPI'
 export default {
     data () {
         return {
             category: 'phone',
             placeholderPhoneNum: "请输入手机号码",
             placeholderPass: "请输入密码",
-            placeholderEmail: "请输入邮箱"
+            placeholderEmail: "请输入邮箱",
+            cellphone: '',
+            password: ''
         }
     },
     computed: {
@@ -50,11 +54,42 @@ export default {
     },
     methods:{
         ...mapMutations([
-            'setLoginComState'
+            'setLoginComState',
+            'setLoginState'
         ]),
         changeCategory(category){
             var self = this;
             self.category = category;
+        },
+        hideLogin(){
+            var self = this;
+            self.setLoginComState(false);
+            bus.$emit('showOrHideLogin');
+        },
+        excuteLogin(){
+            var self = this;
+            if(!self.cellphone || !self.password){
+                return;
+            }else{
+                var phoneReg = new RegExp(/^[1][3,4,5,7,8][0-9]{9}$/);
+                var passReg = new RegExp(/^[a-z0-9_-]{8,30}$/);
+                var phoneResult = phoneReg.exec(self.cellphone);
+                var passResult = passReg.exec(self.password);
+                if(phoneResult && passResult){
+                    console.log(':::登录，手机号为：', self.cellphone);
+                    myAPI.login(self.cellphone, self.password).then(function(res){
+                        console.log(':::登录成功, res: ', res);
+                        self.setLoginState(true)
+                        self.setLoginComState(false)
+                        localStorage.setItem('isLogin', true)
+                        localStorage.setItem('account', JSON.stringify(res.account))
+                        localStorage.setItem('profile', JSON.stringify(res.profile))
+                    })
+                }else{
+                    console.log(':::账号输入有误（只能11位有效电话号码）：', self.password);
+                    console.log(':::或者密码输入有误（只能8到30位包含下划线和连字符等，不能含有空格）：', self.password);
+                }
+            }
         }
     }
 }

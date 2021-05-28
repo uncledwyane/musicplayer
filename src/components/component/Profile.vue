@@ -3,19 +3,19 @@
         <div id="my_head_and_info">
             <!-- 头像、昵称、其他信息 -->
             <div class="header_img" v-show="isLogin">
-                <img src="../../../assets/img/header.png" alt="" class="header" />
+                <img :src="profile.avatarUrl" alt="" class="header" />
             </div>
             <div class="other_info" v-show="isLogin">
-                <p class="nickname">Dwyane Wade</p>
+                <p class="nickname"  :style="{color: customTheme.highlight.color}">{{ profile.nickname }}</p>
             </div>
             <div class="login_notice" v-show="!isLogin">
                 <p :style="{color: customTheme.highlight.color}">{{ $t("login_notice") }}</p>
-                <button class="show_login_btn" @click="setLoginComState(true)"  :style="{backgroundColor: customTheme.highlight.color}">{{$t("login")}}</button>
+                <button class="show_login_btn" @click="showLogin"  :style="{backgroundColor: customTheme.highlight.color}">{{$t("login")}}</button>
             </div>
         </div>
         <div id="option_nav">
             <!-- 导航信息、路由 -->
-            <div class="option" :class="{ option_active: currentOption == option.optionName }" v-for="(option, index) in options" :key="index" @click="goToOption(option.optionName)">
+            <div class="option" :style="{color: currentOption == option.optionName ? customTheme.highlight.color : ''}" v-for="(option, index) in options" :key="index" @click="goToOption(option.optionName)">
                 <span class="option_icon">
                     <i :class="option.icon" class="navIcon"></i>
                 </span>
@@ -30,9 +30,9 @@
 
 <script>
 import {mapMutations, mapState} from 'vuex';
+import bus from '@/components/bus'
 export default {
     computed: mapState([
-        'isLogin',
         'customTheme',
         'version'
     ]),
@@ -50,8 +50,19 @@ export default {
                     optionName: "MyInfo",
                     showName: '我的'
                 },
-            ]
+            ],
+            isLogin: '',
+            account: null,
+            profile: null
         };
+    },
+    created(){
+        var self = this;
+        self.isLogin = localStorage.getItem('isLogin');
+        if(self.isLogin){
+            self.account = JSON.parse(localStorage.getItem('account'))
+            self.profile = JSON.parse(localStorage.getItem('profile'))
+        }
     },
     mounted() {
         var self = this;
@@ -61,6 +72,11 @@ export default {
         ...mapMutations([
             'setLoginComState'
         ]),
+        showLogin(){
+            var self = this;
+            self.setLoginComState(true);
+            bus.$emit('showOrHideLogin');
+        },
         goToOption(optionName) {
             var self = this;
             sessionStorage.setItem("optionName", optionName);
@@ -104,7 +120,6 @@ p {
 }
 .option:hover {
     cursor: pointer;
-    color: $font-highlight-color-dark;
 }
 .option_active {
     color: $font-highlight-color-dark;
