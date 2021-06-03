@@ -38,7 +38,7 @@ export default {
     ]),
     data() {
         return {
-            currentOption: "home",
+            currentOption: "Home",
             options: [
                 {
                     icon: "fa fa-home",
@@ -66,7 +66,7 @@ export default {
     },
     mounted() {
         var self = this;
-        self.currentOption = sessionStorage.getItem("optionName");
+        self.currentOption = sessionStorage.getItem("optionName") || self.currentOption;
     },
     methods: {
         ...mapMutations([
@@ -137,6 +137,7 @@ p {
 .option_name {
     display: inline-block;
     margin-left: 10px;
+    letter-spacing: 5px;
 }
 .header_img {
     @include display-center;
