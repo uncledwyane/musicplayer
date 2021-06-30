@@ -26,6 +26,9 @@ export default {
     data() {
         return {
             mainColor: themeCSS.light_theme,
+            colors: {
+                myRed: '#ffffff'
+            }
         };
     },
     computed: {
@@ -34,7 +37,11 @@ export default {
         ])
     },
     mounted() {
-
+        var self = this;
+        var currLang = localStorage.getItem('lang');
+        if(currLang){
+            self.$i18n.locale = currLang;
+        }
     },
     components: {
         Profile,
@@ -53,7 +60,7 @@ export default {
     z-index: 0;
     overflow: hidden;
     background: none !important;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 20px 20px 30px rgb(0 0 0 / 56%);;
     @include position-center;
     border-radius: 20px;
     padding: 60px 0 0 12%;

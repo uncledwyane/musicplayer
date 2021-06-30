@@ -2,8 +2,8 @@
   <div>
       <div class="login_box">
           <div class="login_category">
-              <div class="login_with_phone category_name" :class="{category_active: category == 'phone'}" @click="changeCategory('phone')">手机</div>
-              <div class="login_with_email category_name" :class="{category_active: category == 'email'}" @click="changeCategory('email')">邮箱</div>
+              <div class="login_with_phone category_name" :class="{category_active: category == 'phone'}" @click="changeCategory('phone')">{{ $t( "login_phone" ) }}</div>
+              <div class="login_with_email category_name" :class="{category_active: category == 'email'}" @click="changeCategory('email')">{{ $t("login_email") }}</div>
           </div>
           <div class="login_phone" v-show="category == 'phone'">
               <div class="phonenumber">
@@ -26,7 +26,7 @@
               </div>
           </div>
           <div class="excute_login">
-              <button class="excute_login_btn">登录</button>
+              <button class="excute_login_btn">{{ $t("login") }}</button>
           </div>
           <div class="close_btn" @click="setLoginComState(false)">
           </div>

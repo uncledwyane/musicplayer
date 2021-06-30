@@ -6,13 +6,14 @@ import router from './router/router'
 import Axios from 'axios'
 import store from '@/store/index.js'
 import CustomTheme from '@/components/theme'
-
+import i18n from '../lang/index'
 
 Vue.use(VueRouter)
 Vue.use(Vuex)
 
 Axios.defaults.withCredentials = true
 Vue.prototype.$axios = Axios
+
 
 /**
  * 防止连续点击路由抛出错误
@@ -25,5 +26,6 @@ VueRouter.prototype.push = function push(location) {
 new Vue({
     render: r=>r(App, 'mu-button', {}, 'Hello World'),
     router,
-    store
+    store,
+    i18n
 }).$mount('#app')

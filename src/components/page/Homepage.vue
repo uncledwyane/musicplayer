@@ -2,7 +2,7 @@
     <div id="homepage">
         <div class="hot_playlists">
             <div class="title">
-                <h2>精品歌单推荐</h2>
+                <h2>{{ $t("playlist_intro") }}</h2>
                 <div class="change_playlist">
                     <i class="fa fa-angle-left" @click="updatePlaylist('previous')"></i>
                     <i class="fa fa-angle-right" @click="updatePlaylist('next')"></i>
@@ -38,7 +38,7 @@
                 </div>
             </div>
             <div class="track_play">
-                <h2 class="songsintro">正在播放</h2>
+                <h2 class="songsintro">{{ $t("current_playing") }}</h2>
                 <play></play>
             </div>
         </div>
