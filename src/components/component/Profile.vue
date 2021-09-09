@@ -2,28 +2,30 @@
     <div id="profile_wrap">
         <div id="my_head_and_info">
             <!-- 头像、昵称、其他信息 -->
-            <div class="header_img" v-show="isLogin">
+            <div class="header_img" v-if="isLogin">
                 <img :src="profile.avatarUrl" alt="" class="header" />
             </div>
-            <div class="other_info" v-show="isLogin">
+            <div class="other_info" v-if="isLogin">
                 <p class="nickname"  :style="{color: customTheme.highlight.color}">{{ profile.nickname }}</p>
             </div>
             <div class="login_notice" v-show="!isLogin">
-                <p :style="{color: customTheme.highlight.color}">{{ $t("login_notice") }}</p>
-                <button class="show_login_btn" @click="showLogin"  :style="{backgroundColor: customTheme.highlight.color}">{{$t("login")}}</button>
+                <p :style="{color: customTheme.highlight.color}">提示</p>
+                <button class="show_login_btn" @click="showLogin"  :style="{backgroundColor: customTheme.highlight.color}">登录</button>
             </div>
         </div>
         <div id="option_nav">
             <!-- 导航信息、路由 -->
-            <div class="option" :style="{color: currentOption == option.optionName ? customTheme.highlight.color : ''}" v-for="(option, index) in options" :key="index" @click="goToOption(option.optionName)">
-                <span class="option_icon">
-                    <i :class="option.icon" class="navIcon"></i>
-                </span>
-                <span class="option_name">{{ $i18n.locale == 'zh' ? option.showName : option.optionName }}</span>
-            </div>
-        </div>
-        <div id="version" :style="{color: customTheme.desc_color.color}">
-            v{{version}}
+            <v-list dense nav class="route-list">
+                <v-list-item v-for="item in options" :key="item.showName" link @click="goToOption(item.optionName)">
+                    <v-list-item-icon style="margin-right: 10px; font-size: 18px;">
+                        <v-icon>{{ item.icon }}</v-icon>
+                    </v-list-item-icon>
+
+                    <v-list-item-content>
+                        <v-list-item-title>{{ item.optionName }}</v-list-item-title>
+                    </v-list-item-content>
+                </v-list-item>
+            </v-list>
         </div>
     </div>
 </template>
@@ -41,19 +43,22 @@ export default {
             currentOption: "home",
             options: [
                 {
-                    icon: "fa fa-home",
+                    icon: "fa fa-music",
                     optionName: "Home",
                     showName: '首页'
                 },
                 {
-                    icon: "fa fa-user-circle",
+                    icon: "fa fa-user-o",
                     optionName: "MyInfo",
                     showName: '我的'
                 },
             ],
-            isLogin: '',
+            isLogin: false,
             account: null,
-            profile: null
+            profile: {
+                avatarUrl: '',
+                nickname: ''
+            }
         };
     },
     created(){
@@ -62,6 +67,8 @@ export default {
         if(self.isLogin){
             self.account = JSON.parse(localStorage.getItem('account'))
             self.profile = JSON.parse(localStorage.getItem('profile'))
+        }else{
+            self.setLoginComState(true);
         }
     },
     mounted() {
@@ -104,6 +111,7 @@ p {
     margin-top: 20px;
     padding: 10px;
     display: flex;
+    height: 50%;
     flex-direction: column;
     align-items: center;
 }
@@ -205,6 +213,11 @@ p {
     text-align: center;
     line-height: 20px;
     position: absolute;
+    left: -5px;
     bottom: 10px;
+}
+
+.route-list{
+    width: 100%;
 }
 </style>

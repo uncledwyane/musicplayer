@@ -2,7 +2,7 @@
     <div id="homepage" :style="{backgroundColor: customTheme.background.color}">
         <div class="hot_playlists">
             <div class="title">
-                <h2 :style="{color: customTheme.highlight.color}">{{ $t("playlist_intro") }}</h2>
+                <h2 :style="{color: customTheme.highlight.color}">歌单推荐</h2>
                 <div class="change_playlist">
                     <i class="fa fa-angle-left " @click="updatePlaylist('previous')" @mouseover="setColorToHighLight" @mouseout="recoveryColor"></i>
                     <i class="fa fa-angle-right " @click="updatePlaylist('next')" @mouseover="setColorToHighLight" @mouseout="recoveryColor"></i>
@@ -16,16 +16,15 @@
                 >
                     <div class="playlist_cover">
                         <!-- <div class="playingLyer" v-show="playlist.id == playingPlaylistId"></div> -->
-                        <img
+                        <v-img
                             :src="playlist.coverImgUrl"
-                            :alt="playlist.id"
                             class="cover_img"
                             id="cover_img"
                             ref="coverImg"
                             @mouseover="showBoxShadow"
                             @click="getTrackListById(playlist.id, playlist.name)"
                             :style="{'box-shadow': playlist.id == playingPlaylistId ? `0 20px 20px ${customTheme.highlight.color}`: ''}"
-                        />
+                        ></v-img>
                     </div>
                     <div class="playlist_info">
                         <p class="playlist_name" :style="{color: customTheme.text_color.color}">{{ playlist.name }}</p>
@@ -42,7 +41,7 @@
                 </div>
             </div>
             <div class="track_play">
-                <h2 class="songsintro" :style="{color: customTheme.highlight.color}">{{ $t("current_playing") }}</h2>
+                <h2 class="songsintro" :style="{color: customTheme.highlight.color}">当前正在播放</h2>
                 <play></play>
             </div>
         </div>
@@ -76,6 +75,9 @@ export default {
                 self.getTrackListById(res.playlists[0].id, res.playlists[0].name);
             });
         }
+        self.showNum = self.getNumByScreenWidth();
+        self.maxIndex = self.showNum - 1;
+        console.log('根据屏幕获取歌单显示个数为： ', self.getNumByScreenWidth());
     },
     components: {
         TrackList,
@@ -84,11 +86,18 @@ export default {
     methods: {
         ...mapMutations(["setHighQualityPlaylist", "setTrackList", "setTrackListIds"]),
         showBoxShadow(e){
-            var self = this;
-            var bgColor = self.customTheme.highlight.color.colorRgba(.5);
-            e.target.style.boxShadow = `0 20px 20px ${bgColor}`
+            // var self = this;
+            // var bgColor = self.customTheme.highlight.color.colorRgba(.5);
+            // e.target.style.boxShadow = `0 20px 20px ${bgColor}`
 
         },
+
+        getNumByScreenWidth(){
+            var self = this;
+            var screenWidth = document.body.clientWidth;
+            return parseInt((screenWidth * 0.88) / 180);
+        },
+
         setColorToHighLight(e){
             var self = this;
             e.target.style.color = self.customTheme.highlight.color;

@@ -46,10 +46,6 @@ export default {
     },
     mounted() {
         var self = this;
-        var currLang = localStorage.getItem('lang');
-        if(currLang){
-            self.$i18n.locale = currLang;
-        }
         self.$refs.musicAudio.onended = function(e){
             self.stopPlay();
         }
@@ -107,14 +103,12 @@ export default {
 @import "../scss/mixins.scss";
 @import "../scss/theme.scss";
 #app {
-    width: 1280px;
-    height: 720px;
+    width: 100%;
+    height: 100%;
     z-index: 0;
     overflow: hidden;
     background: none !important;
-    box-shadow: 20px 20px 30px rgb(0 0 0 / 56%);;
-    @include position-center;
-    border-radius: 20px;
+    box-shadow: 20px 20px 30px rgb(0 0 0 / 56%);
     padding: 60px 0 0 12%;
     user-select: none;
     #profile {
@@ -123,7 +117,6 @@ export default {
         padding: 10px;
         box-sizing: border-box;
         overflow: hidden;
-        border-radius: 20px 0 0 20px;
         overflow: hidden;
         user-select: none;
         // background: $front-color-dark;
@@ -138,7 +131,6 @@ export default {
         left: 12%;
         height: 60px;
         width: 88%;
-        border-radius: 0 20px 0 0;
         display: flex;
         align-items: center;
         background: $front-color-dark;

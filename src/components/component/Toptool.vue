@@ -5,7 +5,7 @@
           <i class="fa fa-search searchicon" @click="searchSong" :style="{color: theme.highlight.color}"></i>
       </div>
       <div id="notice_and_setting">
-          <span class="language" @click="changeLanguage"><i class="fa fa-language" style="color: #9ea8c4;"  :style="{color: theme.highlight.color}"></i></span>
+          <!-- <span class="language"><i class="fa fa-language" style="color: #9ea8c4;"  :style="{color: theme.highlight.color}"></i></span> -->
           <span class="notice"><i class="fa fa-bell" style="color: #9ea8c4;"  :style="{color: theme.highlight.color}"></i></span>
           <span class="setting" @click="isShowTheme? isShowTheme = false : isShowTheme = true"><i class="fa fa-cog" style="color: #9ea8c4;" :style="{color: theme.highlight.color}"></i></span>
       </div>
@@ -138,19 +138,6 @@ export default {
             self.setTheme(self.theme);
             self.isShowTheme = false;
         },
-        changeLanguage(){
-            var self = this;
-            var currenLang = localStorage.getItem('lang');
-            if(currenLang){
-                if(currenLang == 'zh'){
-                    self.$i18n.locale = 'en';
-                }else{
-                    self.$i18n.locale = 'zh';
-                }
-                localStorage.setItem('lang', self.$i18n.locale);
-            }
-            
-        },
         changeThemeTo(themeName){
             var self = this;
             // 隐藏自定义颜色
@@ -180,16 +167,16 @@ export default {
     #search_com{
         width: 400px;
         border: 2px solid rgba(117, 117, 117, 0.1);;
-        border-radius: 20px;
+        border-radius: 5px;
         padding: 5px 10px;
         margin-left: 30px;
-        height: 25px;
+        height: 40px;
     }
     #search_com:focus{
-        border-radius: 20px;
+        border-radius: 5px;
         color: $font-highlight-color-dark;
         outline-style: none;
-        border: 2px solid rgba(117, 117, 117, 0.1);
+        border: 1px solid rgba(117, 117, 117, 0.1);
     }
     .searchicon{
         position: relative;

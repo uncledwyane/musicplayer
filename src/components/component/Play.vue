@@ -2,7 +2,7 @@
   <div id="play_wrap"  :style="{backgroundColor: customTheme.background.color}">
       <div class="track_box"  :style="{backgroundColor: customTheme.background.color}">
             <div class="cover">
-              <img :src="songIsPlaying.coverImg" class="cover_img"  :style="{backgroundColor: !songIsPlaying.playState ? customTheme.placehoder.color : ''}">
+              <v-img :src="songIsPlaying.coverImg" class="cover_img"  :style="{backgroundColor: !songIsPlaying.playState ? customTheme.placehoder.color : ''}"></v-img>
             </div>
             <div class="track_info">
                 <p class="track_name" :style="{backgroundColor: !songIsPlaying.name ? customTheme.placehoder.color : '', color: customTheme.highlight.color}">{{ songIsPlaying.name }}</p>

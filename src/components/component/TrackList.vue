@@ -5,7 +5,7 @@
                 <span class="order_num"  :style="{color: customTheme.text_color.color}">{{ index + 1 }}</span>
             </div>
             <div class="track_cover">
-                <img class="trackcover_img" :src="track.al.picUrl"/>
+                <v-img class="trackcover_img" :src="track.al.picUrl"></v-img>
             </div>
             <div class="track_name">
                 <span class="song_name" :style="{color: customTheme.text_color.color}">{{ track.name }}</span>
@@ -184,9 +184,10 @@ export default {
 }
 .track_cover {
     display: flex;
-    width: 10%;
-    align-items: center;
-    justify-content: center;
+    width: 30px;
+    align-items: left;
+    justify-content: left;
+    margin: 0 5px;
     @include display-center;
 }
 .track_name {
@@ -211,8 +212,8 @@ export default {
     @include display-center;
 }
 .trackcover_img {
-    width: 30px;
-    height: 30px;
+    // width: 30px;
+    // height: 30px;
     border-radius: 50%;
 }
 .play_state {

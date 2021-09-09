@@ -6,7 +6,8 @@ import router from './router/router'
 import Axios from 'axios'
 import store from '@/store/index.js'
 import CustomTheme from '@/components/theme'
-import i18n from '../lang/index'
+// import i18n from '../lang/index'
+import vuetify from '@/plugins/vuetify'
 
 Vue.use(VueRouter)
 Vue.use(Vuex)
@@ -27,5 +28,5 @@ new Vue({
     render: r=>r(App, 'mu-button', {}, 'Hello World'),
     router,
     store,
-    i18n
+    vuetify
 }).$mount('#app')

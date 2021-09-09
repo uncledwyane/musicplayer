@@ -22,6 +22,7 @@ module.exports = {
     devtool: process.env.Node_ENV === 'production' ? 'none' : 'source-map',
     devServer: {
         contentBase: path.join(__dirname, 'dist'),
+        hot: true,
         port: 8000,
         compress: true,
         open: true,

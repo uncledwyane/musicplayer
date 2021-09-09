@@ -2,8 +2,8 @@
   <div>
       <div class="login_box"  :style="{backgroundColor: customTheme.background.color}">
           <div class="login_category">
-              <div class="login_with_phone category_name" :style="{color: customTheme.highlight.color}" :class="{category_active: category == 'phone'}" @click="changeCategory('phone')">{{ $t( "login_phone" ) }}</div>
-              <div class="login_with_email category_name" :style="{color: customTheme.highlight.color}" :class="{category_active: category == 'email'}" @click="changeCategory('email')">{{ $t("login_email") }}</div>
+              <div class="login_with_phone category_name" :style="{color: customTheme.highlight.color}" :class="{category_active: category == 'phone'}" @click="changeCategory('phone')">电话</div>
+              <div class="login_with_email category_name" :style="{color: customTheme.highlight.color}" :class="{category_active: category == 'email'}" @click="changeCategory('email')">邮箱</div>
           </div>
           <div class="login_phone" v-show="category == 'phone'">
               <div class="phonenumber">
@@ -26,7 +26,7 @@
               </div>
           </div>
           <div class="excute_login">
-              <button class="excute_login_btn" @click="excuteLogin" :style="{backgroundColor: customTheme.highlight.color, color: customTheme.text_color.color}">{{ $t("login") }}</button>
+              <button class="excute_login_btn" @click="excuteLogin" :style="{backgroundColor: customTheme.highlight.color, color: customTheme.text_color.color}">登录</button>
           </div>
           <div class="close_btn" @click="hideLogin" :style="{backgroundColor: customTheme.highlight.color}">
           </div>
