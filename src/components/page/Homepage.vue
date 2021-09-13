@@ -4,34 +4,19 @@
             <div class="title">
                 <h2 :style="{color: customTheme.highlight.color}">歌单推荐</h2>
                 <div class="change_playlist">
-                    <i class="fa fa-angle-left " @click="updatePlaylist('previous')" @mouseover="setColorToHighLight" @mouseout="recoveryColor"></i>
-                    <i class="fa fa-angle-right " @click="updatePlaylist('next')" @mouseover="setColorToHighLight" @mouseout="recoveryColor"></i>
+                    <v-btn icon color="pink" :style="{color: theme.highlight.color}">
+                        <v-icon>mdi-chevron-double-left</v-icon>
+                    </v-btn>
+                    <v-btn icon color="pink" :style="{color: theme.highlight.color}">
+                        <v-icon>mdi-chevron-double-right</v-icon>
+                    </v-btn>
+                    <v-btn icon color="green" :style="{color: theme.highlight.color}" @click="getNumByScreenWidth">
+                        <v-icon>mdi-cached</v-icon>
+                    </v-btn>
                 </div>
             </div>
-            <div class="playlist">
-                <div
-                    class="playlist_item"
-                    v-for="playlist in playlistShow"
-                    :key="playlist.id"
-                >
-                    <div class="playlist_cover">
-                        <!-- <div class="playingLyer" v-show="playlist.id == playingPlaylistId"></div> -->
-                        <v-img
-                            :src="playlist.coverImgUrl"
-                            class="cover_img"
-                            id="cover_img"
-                            ref="coverImg"
-                            @mouseover="showBoxShadow"
-                            @click="getTrackListById(playlist.id, playlist.name)"
-                            :style="{'box-shadow': playlist.id == playingPlaylistId ? `0 20px 20px ${customTheme.highlight.color}`: ''}"
-                        ></v-img>
-                    </div>
-                    <div class="playlist_info">
-                        <p class="playlist_name" :style="{color: customTheme.text_color.color}">{{ playlist.name }}</p>
-                        <p class="playlist_count" :style="{color: customTheme.desc_color.color}">{{ playlist.trackCount }}首</p>
-                    </div>
-                </div>
-            </div>
+            <play-list :playlists="playlistShow"></play-list>
+
         </div>
         <div class="play_info">
             <div class="music_in_playlist">
@@ -53,6 +38,11 @@ import { mapMutations, mapState } from "vuex";
 import TrackList from "@/components/component/TrackList";
 import Play from '@/components/component/Play'
 import myAPI from '@/api/myAPI'
+import PlayList from '@/components/component/PlayList'
+import bus from "../bus";
+import theme from '@/components/theme'
+
+
 export default {
     computed: mapState(["highQualityPlaylist", "customTheme"]),
     data() {
@@ -75,27 +65,32 @@ export default {
                 self.getTrackListById(res.playlists[0].id, res.playlists[0].name);
             });
         }
-        self.showNum = self.getNumByScreenWidth();
-        self.maxIndex = self.showNum - 1;
-        console.log('根据屏幕获取歌单显示个数为： ', self.getNumByScreenWidth());
+        self.getNumByScreenWidth();
+
+        bus.$on('getPlayListById', function(info){
+            self.getTrackListById(info.id, info.name);
+        })
+    },
+    created(){
+        var self = this;
+        self.theme = JSON.parse(localStorage.getItem('customTheme')) || theme['LIGHT']
     },
     components: {
         TrackList,
-        Play
+        Play,
+        PlayList
     },
     methods: {
         ...mapMutations(["setHighQualityPlaylist", "setTrackList", "setTrackListIds"]),
-        showBoxShadow(e){
-            // var self = this;
-            // var bgColor = self.customTheme.highlight.color.colorRgba(.5);
-            // e.target.style.boxShadow = `0 20px 20px ${bgColor}`
 
-        },
+
 
         getNumByScreenWidth(){
             var self = this;
             var screenWidth = document.body.clientWidth;
-            return parseInt((screenWidth * 0.88) / 180);
+            self.showNum = parseInt((screenWidth * 0.88) / 180);
+            self.maxIndex = self.showNum - 1;
+            console.log('根据屏幕获取歌单显示个数为： ', self.getNumByScreenWidth());
         },
 
         setColorToHighLight(e){
@@ -231,70 +226,16 @@ p {
     display: flex;
     flex-direction: column;
 }
-.playlist {
-    display: flex;
-}
-.playlist_item {
-    width: 130px;
-    height: 190px;
-    margin-right: 50px;
-}
-.playlist_cover {
-    width: 130px;
-    height: 130px;
-    position: relative;
-    border-radius: 10px;
-    overflow: hidden;
-    @include display-center;
-}
-.playlist_count {
-    font-size: 12px;
-}
-.playlist_cover:hover {
-    cursor: pointer;
-}
-.playingLyer{
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255,255,255,.5);
-    backdrop-filter: blur(10px);
-}
-.playlist_info {
-    position: relative;
-    height: 60px;
-    padding-top: 5px;
-}
-.playlist_name {
-    font-size: 12px;
-    overflow: hidden;
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
-    margin-bottom: 5px;
-    color: #fff;
-}
-.cover_img {
-    width: 130px;
-    height: 130px;
-    border-radius: 10px;
-    transition: all ease .3s;
-}
-.cover_img:hover {
-    cursor: pointer;
-}
 .title {
     display: flex;
     align-items: center;
     position: relative;
-    margin-bottom: 10px;
+    margin: 10px 0;
     color: #01103e;
 }
 .change_playlist {
     position: absolute;
-    right: 50px;
+    right: 10px;
     width: auto;
     display: flex;
 }

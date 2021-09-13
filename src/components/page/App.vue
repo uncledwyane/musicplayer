@@ -9,7 +9,7 @@
             </keep-alive>
         </transition>
 
-        <audio ref="musicAudio" id="musicAudio" @ended='playEnd' ></audio>
+        <audio ref="musicAudio" id="musicAudio" @ended='playEnd' @pause="playPause" @play="playStart"></audio>
     </div>
 </template>
 
@@ -78,6 +78,23 @@ export default {
             // TODO 后续根据播放模式（随机/单曲循环/列表循环）控制下一曲
             bus.$emit('nextSong');
         },
+
+        playPause(){
+            var self = this;
+            self.updatePlayingTrack({
+                state: 'pause',
+                playState: false
+            })
+        },
+
+        playStart(){
+            var self = this;
+            self.updatePlayingTrack({
+                state: 'play',
+                playState: true
+            })
+        },
+
         changeSong(url){
             var self = this;
             self.$refs.musicAudio.pause();

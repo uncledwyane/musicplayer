@@ -4,9 +4,6 @@
             <div class="track_order">
                 <span class="order_num"  :style="{color: customTheme.text_color.color}">{{ index + 1 }}</span>
             </div>
-            <div class="track_cover">
-                <v-img class="trackcover_img" :src="track.al.picUrl"></v-img>
-            </div>
             <div class="track_name">
                 <span class="song_name" :style="{color: customTheme.text_color.color}">{{ track.name }}</span>
             </div>

@@ -43,12 +43,12 @@ export default {
             currentOption: "home",
             options: [
                 {
-                    icon: "fa fa-music",
+                    icon: "mdi-home-variant-outline",
                     optionName: "Home",
                     showName: '首页'
                 },
                 {
-                    icon: "fa fa-user-o",
+                    icon: "mdi-account-outline",
                     optionName: "MyInfo",
                     showName: '我的'
                 },

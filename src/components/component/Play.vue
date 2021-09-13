@@ -2,7 +2,7 @@
   <div id="play_wrap"  :style="{backgroundColor: customTheme.background.color}">
       <div class="track_box"  :style="{backgroundColor: customTheme.background.color}">
             <div class="cover">
-              <v-img :src="songIsPlaying.coverImg" class="cover_img"  :style="{backgroundColor: !songIsPlaying.playState ? customTheme.placehoder.color : ''}"></v-img>
+              <v-img :src="songIsPlaying.coverImg" class="cover_img" :class="{'playing': songIsPlaying.playState, 'paused': !songIsPlaying.playState}"  :style="{backgroundColor: !songIsPlaying.playState ? customTheme.placehoder.color : ''}"></v-img>
             </div>
             <div class="track_info">
                 <p class="track_name" :style="{backgroundColor: !songIsPlaying.name ? customTheme.placehoder.color : '', color: customTheme.highlight.color}">{{ songIsPlaying.name }}</p>
@@ -129,20 +129,18 @@ export default {
     }
     #play_wrap{
         width: 100%;
-        height: 90%;
+        height: 95%;
         background: $front-color-dark;
         box-sizing: border-box;
         border-radius: 10px;
         display: flex;
         flex-direction: column;
         position: relative;
-        /* justify-content: center; */
         align-items: center;
     }
     .track_box{
         width: 65%;
-        /* background: lightgreen; */
-        height: 75%;
+        height: 100%;
         margin: 0px auto;
         padding: 10px;
         box-sizing: border-box;
@@ -160,6 +158,7 @@ export default {
         padding: 10px 0;
         margin-bottom: 10px;
     }
+
     .track_info{
         height: 30%;
         width: 100%;
@@ -193,10 +192,15 @@ export default {
     }
     .cover_img{
         width: 70%;
-        min-height: 100%;
         border-radius: 50%;
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
+
+    .playing{
+        animation: myRotate linear infinite 20s;
+        animation-play-state: running;
+    }
+
     .previous_track, .pause_or_play, .next_track{
         width: calc(100% / 3);
         height: 100%;
@@ -212,10 +216,25 @@ export default {
     .previous_track{
         justify-content: flex-end;
     }
+
+    .paused{
+        animation: myRotate linear infinite 20s;
+        animation-play-state: paused;
+    }
+
     .next_track{
         justify-content: flex-start;
     }
     .pause_or_play:hover, .previous_track:hover, .next_track:hover{
         cursor: pointer;
+    }
+
+    @keyframes myRotate{
+        from {
+            transform: rotate(0deg);
+        }
+        to{
+            transform: rotate(360deg);
+        }
     }
 </style>

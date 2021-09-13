@@ -6,8 +6,11 @@
       </div>
       <div id="notice_and_setting">
           <!-- <span class="language"><i class="fa fa-language" style="color: #9ea8c4;"  :style="{color: theme.highlight.color}"></i></span> -->
-          <span class="notice"><i class="fa fa-bell" style="color: #9ea8c4;"  :style="{color: theme.highlight.color}"></i></span>
-          <span class="setting" @click="isShowTheme? isShowTheme = false : isShowTheme = true"><i class="fa fa-cog" style="color: #9ea8c4;" :style="{color: theme.highlight.color}"></i></span>
+          <!-- <span class="notice"><i class="fa fa-bell" style="color: #9ea8c4;"  :style="{color: theme.highlight.color}"></i></span> -->
+            <!-- <span class="setting"><i class="fa fa-cog" style="color: #9ea8c4;" :style="{color: theme.highlight.color}"></i></span> -->
+            <v-btn icon color="pink"  @click="isShowTheme? isShowTheme = false : isShowTheme = true" :style="{color: theme.highlight.color}">
+                <v-icon>mdi-theme-light-dark</v-icon>
+            </v-btn>
       </div>
       <div class="search_result" :style="{transform: songs? 'scaleY(1)' : 'scaleY(0)', backgroundColor: theme.background.color}" >
           <div class="song_item" v-for="song in songs" :key="song.id" @click="playIt(song)" :style="{backgroundColor: theme.list_bg.color, color: theme.text_color.color}">
@@ -166,7 +169,6 @@ export default {
     }
     #search_com{
         width: 400px;
-        border: 2px solid rgba(117, 117, 117, 0.1);;
         border-radius: 5px;
         padding: 5px 10px;
         margin-left: 30px;
