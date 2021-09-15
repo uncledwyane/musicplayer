@@ -15,14 +15,14 @@
         </div>
         <div id="option_nav">
             <!-- 导航信息、路由 -->
-            <v-list dense nav class="route-list">
-                <v-list-item v-for="item in options" :key="item.showName" link @click="goToOption(item.optionName)">
-                    <v-list-item-icon style="margin-right: 10px; font-size: 18px;">
-                        <v-icon>{{ item.icon }}</v-icon>
+            <v-list dense nav class="route-list" :style="{background: customTheme.background.color}">
+                <v-list-item v-for="item in options" :key="item.showName" @click="goToOption(item.optionName)">
+                    <v-list-item-icon style="margin-right: 10px; font-size: 18px;" >
+                        <v-icon :style="{color: currentOption == item.optionName ? customTheme.highlight.color : customTheme.text_color.color}">{{ item.icon }}</v-icon>
                     </v-list-item-icon>
 
                     <v-list-item-content>
-                        <v-list-item-title>{{ item.optionName }}</v-list-item-title>
+                        <v-list-item-title  :style="{color: currentOption == item.optionName ? customTheme.highlight.color : customTheme.text_color.color}">{{ item.optionName }}</v-list-item-title>
                     </v-list-item-content>
                 </v-list-item>
             </v-list>
@@ -40,7 +40,7 @@ export default {
     ]),
     data() {
         return {
-            currentOption: "home",
+            currentOption: "Home",
             options: [
                 {
                     icon: "mdi-home-variant-outline",
@@ -115,37 +115,7 @@ p {
     flex-direction: column;
     align-items: center;
 }
-.option {
-    width: 60%;
-    height: 30px;
-    text-align: left;
-    transition: all 0.3s ease;
-    line-height: 30px;
-    margin-bottom: 10px;
-    display: flex;
-    align-items: center;
-    color: $font-color-dark;
-}
-.option:hover {
-    cursor: pointer;
-}
-.option_active {
-    color: $font-highlight-color-dark;
-}
-.option_icon {
-    width: 14px;
-    height: 14px;
-    text-align: center;
-    line-height: 14px;
-    display: inline-block;
-}
-.navIcon{
-    float: left;
-}
-.option_name {
-    display: inline-block;
-    margin-left: 10px;
-}
+
 .header_img {
     @include display-center;
 }
@@ -161,9 +131,7 @@ p {
     margin-top: 10px;
     color: $font-highlight-color-dark;
 }
-.otherinfo {
-    color: rgb(144, 150, 169);
-}
+
 #platform_info{
     width: 80%;
     height: 90px;
@@ -174,6 +142,7 @@ p {
     left: 50%;
     transform: translateX(-50%);
 }
+
 .login_notice{
     display: flex;
     flex-direction: column;

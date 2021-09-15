@@ -12,7 +12,7 @@ var LIGHT_THEME = {
     highlight: {
         desc: "高亮色",
         key: "highlight",
-        color: "#66996f"
+        color: "#2c9b5c"
     },
     text_color: {
         desc: "普通文字颜色",
@@ -27,7 +27,7 @@ var LIGHT_THEME = {
     list_bg: {
         desc: "列表背景色",
         key: "list_bg",
-        color: "#e1f4e8"
+        color: "#fafafa"
     },
     artist: {
         desc: "歌手颜色",
@@ -50,7 +50,7 @@ var DARK_THEME = {
     background: {
         desc: "背景色",
         key: "background",
-        color: "#141414"
+        color: "#121212"
     },
     track_active: {
         desc: "正在播放专辑背景色",
@@ -60,37 +60,37 @@ var DARK_THEME = {
     highlight: {
         desc: "高亮色",
         key: "highlight",
-        color: "#66996f"
+        color: "#2c9b5c"
     },
     text_color: {
         desc: "普通文字颜色",
         key: "text_color",
-        color: "#adadad"
+        color: "#ffffff"
     },
     desc_color: {
         desc: "次要文字颜色",
         key: "desc_color",
-        color: "#8f8f8f"
+        color: "#a1a1a1"
     },
     list_bg: {
         desc: "列表背景色",
         key: "list_bg",
-        color: "#333333"
+        color: "#1c1c1c"
     },
     artist: {
         desc: "歌手颜色",
         key: "artist",
-        color: "#0d6e52"
+        color: "#808080"
     },
     placehoder: {
         desc: "占位色",
         key: "placehoder",
-        color: "#6b6b6b"
+        color: "#1c1c1c"
     },
     search_bar_bg: {
         desc: "搜索框底色",
         key: "search_bar",
-        color: "#3b3b3b"
+        color: "#212121"
     }
 }
 

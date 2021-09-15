@@ -5,10 +5,10 @@
                 <span class="order_num"  :style="{color: customTheme.text_color.color}">{{ index + 1 }}</span>
             </div>
             <div class="track_name">
-                <span class="song_name" :style="{color: customTheme.text_color.color}">{{ track.name }}</span>
+                <span class="song_infos song_name" :style="{color: customTheme.text_color.color}">{{ track.name }}</span>
             </div>
             <div class="track_artists">
-                <span class="artists" :style="{color: customTheme.artist.color}">{{ track.ar | trackArtistsFilter(track.ar) }}</span>
+                <span class="song_infos artists" :style="{color: customTheme.artist.color}">{{ track.ar | trackArtistsFilter(track.ar) }}</span>
             </div>
             <div class="track_time">
                 <span class="song_time" :style="{color: customTheme.desc_color.color}">{{ track.dt | trackTimeFilter(track.dt) }}</span>
@@ -179,14 +179,6 @@ export default {
     @include display-center;
     color: #fff;
 }
-.track_cover {
-    display: flex;
-    width: 30px;
-    align-items: left;
-    justify-content: left;
-    margin: 0 5px;
-    @include display-center;
-}
 .track_name {
     width: 30%;
     display: flex;
@@ -208,11 +200,6 @@ export default {
     width: 10%;
     @include display-center;
 }
-.trackcover_img {
-    // width: 30px;
-    // height: 30px;
-    border-radius: 50%;
-}
 .play_state {
     display: block;
     width: 32px;
@@ -223,15 +210,10 @@ export default {
     line-height: 32px;
     text-align: center;
 }
-.play_state_play {
-    background: url("assets/img/pause.png") center center no-repeat;
-    background-size: contain;
-}
-.play_state_pause {
-    background: url("assets/img/play.png") center center no-repeat;
-    background-size: contain;
-}
-.track_isplaying{
-    border-left: 5px solid $font-highlight-color-dark;
+
+.song_infos{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis; /*超出部分用...代替*/
 }
 </style>

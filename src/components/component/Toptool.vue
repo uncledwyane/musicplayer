@@ -8,7 +8,7 @@
           <!-- <span class="language"><i class="fa fa-language" style="color: #9ea8c4;"  :style="{color: theme.highlight.color}"></i></span> -->
           <!-- <span class="notice"><i class="fa fa-bell" style="color: #9ea8c4;"  :style="{color: theme.highlight.color}"></i></span> -->
             <!-- <span class="setting"><i class="fa fa-cog" style="color: #9ea8c4;" :style="{color: theme.highlight.color}"></i></span> -->
-            <v-btn icon color="pink"  @click="isShowTheme? isShowTheme = false : isShowTheme = true" :style="{color: theme.highlight.color}">
+            <v-btn icon color="pink"  @click="currTheme == 'LIGHT' ? changeThemeTo('DARK') : changeThemeTo('LIGHT')" :style="{color: theme.highlight.color}">
                 <v-icon>mdi-theme-light-dark</v-icon>
             </v-btn>
       </div>
@@ -185,9 +185,7 @@ export default {
         right: 30px;
         color: #656565;
     }
-    .notice{
-        margin:0 10px;
-    }
+    
     .search_result{
         width: 500px;
         background: rgba(0,0,0,.8);

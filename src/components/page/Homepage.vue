@@ -4,10 +4,10 @@
             <div class="title">
                 <h2 :style="{color: customTheme.highlight.color}">歌单推荐</h2>
                 <div class="change_playlist">
-                    <v-btn icon color="pink" :style="{color: theme.highlight.color}">
+                    <v-btn icon color="pink" :style="{color: theme.highlight.color}" @click="updatePlaylist('previous')">
                         <v-icon>mdi-chevron-double-left</v-icon>
                     </v-btn>
-                    <v-btn icon color="pink" :style="{color: theme.highlight.color}">
+                    <v-btn icon color="pink" :style="{color: theme.highlight.color}" @click="updatePlaylist('next')">
                         <v-icon>mdi-chevron-double-right</v-icon>
                     </v-btn>
                     <v-btn icon color="green" :style="{color: theme.highlight.color}" @click="getNumByScreenWidth">
@@ -239,20 +239,7 @@ p {
     width: auto;
     display: flex;
 }
-.fa {
-    font-size: 25px;
-    display: block;
-    width: 25px;
-    text-align: center;
-    height: 25px;
-    transition: all ease 0.3s;
-}
-.fa:hover {
-    cursor: pointer;
-}
-.fa-angle-left {
-    margin-right: 20px;
-}
+
 .play_info {
     width: 100%;
     height: 70%;
