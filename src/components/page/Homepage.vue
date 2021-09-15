@@ -90,7 +90,8 @@ export default {
             var screenWidth = document.body.clientWidth;
             self.showNum = parseInt((screenWidth * 0.88) / 180);
             self.maxIndex = self.showNum - 1;
-            console.log('根据屏幕获取歌单显示个数为： ', self.getNumByScreenWidth());
+            self.playlistFilter(self.minIndex, self.maxIndex);
+            console.log('根据屏幕获取歌单显示个数为： ', self.showNum);
         },
 
         setColorToHighLight(e){
@@ -187,6 +188,7 @@ export default {
             var self = this;
             self.playingPlaylistName = name;
             self.playingPlaylistId = id;
+            console.log('+++getTrackListById, id: ',id,  ' ,name: ', name );
             myAPI.getPlayListDetail(id).then(function (res) {
                 self.setTrackList(res.playlist.tracks);
                 var tempArray = [];
